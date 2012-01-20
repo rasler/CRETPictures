@@ -9,5 +9,9 @@ $pi_db_pass = "";
 $pi_db_name = "cret";
 $pi_db_prefix = "cret_";
 
+# Permissions management
+$public_permissions = array();
+$default_permissions = array("application.login");
+
 
 ?>
