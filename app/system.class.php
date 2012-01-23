@@ -116,8 +116,8 @@ class System
             return true;
         foreach ($this->perms as $value)
         {
-            $tmp = strstr($value, '*');
-            if($tmp != false && substr_compare($perm, $tmp, 0, strlen($tmp), true))
+            $tmp = strstr($value, '*', true);
+            if($tmp != false && substr_compare($perm, $tmp, 0, strlen($tmp), true) == 0)
                 return true;
         }
         return false;
@@ -126,6 +126,26 @@ class System
     {
         if(!$this->permissions_test($perm))
             throw new PermissonException ($perm);
+    }
+    public function permissions_grant($user_id, $perm)
+    {
+        // the user must have the permession to grant new permission ...
+        $this->permissions_require ("admin.permission.grant");
+        // ...and must have the permission he desires to grant
+        $this->permissions_require ($perm);
+        
+        $rs = $this->db->prepare('INSERT INTO '.$this->prfx.'permissions VALUES(?, ?)');
+        $rs->execute(array($user_id, $perm));
+    }
+    public function permissions_revoke($user_id, $perm)
+    {
+        $this->permissions_require ("admin.permission.revoke");
+        $this->permissions_require ($perm);
+        if($user_id == $this->user["id"])
+            throw new Exception ("A user cannont revoke his own permissions");
+        
+        $rs = $this->db->prepare('DELETE FROM '.$this->prfx.'permissions WHERE uid=? AND perm=? LIMIT 1');
+        $rs->execute(array($user_id, $perm));
     }
 
 

@@ -40,6 +40,18 @@ $app->delete('/user/:login', function ($login) {
     echo json_encode($system->user_delete($user));
 });
 
+$app->post('/user/:login/permission/:perm', function ($login, $perm) {
+    global $system;
+    $user = $system->user_getByLogin($login);
+    echo json_encode($system->permissions_grant($user["id"], $perm));
+});
+
+$app->delete('/user/:login/permission/:perm', function ($login, $perm) {
+    global $system;
+    $user = $system->user_getByLogin($login);
+    echo json_encode($system->permissions_revoke($user["id"], $perm));
+});
+
 $app->post('/session', function () use ($app) {
     global $system;
     echo json_encode($system->login($app->request()->get('login'), $app->request()->get('password')));

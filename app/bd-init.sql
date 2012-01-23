@@ -20,7 +20,7 @@ DROP TABLE IF EXISTS `cret_permissions`;
 CREATE TABLE IF NOT EXISTS `cret_permissions` (
   `uid` int(10) unsigned NOT NULL,
   `perm` varchar(35) COLLATE utf8_unicode_ci NOT NULL,
-  KEY `uid` (`uid`,`perm`)
+  PRIMARY KEY (`uid`,`perm`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
