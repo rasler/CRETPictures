@@ -14,7 +14,7 @@ class System
     public function user_create($login, $password)
     {
         global $default_permissions;
-        if(!is_string($login)||!is_string($password))
+        if(!is_string($login)||!is_string($password)||!ctype_alnum($login))
             throw new Exception ("Invalid user");
         $this->permissions_require ("admin.user.create");
         $this->db->beginTransaction();
