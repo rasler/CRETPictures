@@ -35,7 +35,7 @@ class System
         $rs = $this->db->prepare('SELECT uid as id, login, creation, lastConnection FROM '.$this->prfx.'users WHERE uid = ? LIMIT 0,1');
         $rs->execute(array($id));
         if($rs->rowCount() == 0)
-            return null;
+            throw new Exception("User not found", 404);
         $user = $rs->fetch(PDO::FETCH_NAMED);
         $user["permissions"] = $this->permissions_getFrom($user["id"]);
         return $user;
@@ -59,7 +59,7 @@ class System
             $rs->execute(array($login));
         }
         if($rs->rowCount() == 0)
-            return null;
+            throw new Exception("User not found", 404);
         $user = $rs->fetch(PDO::FETCH_NAMED);
         $user["permissions"] = $this->permissions_getFrom($user["id"]);
         return $user;
@@ -155,7 +155,7 @@ class System
         $this->logout(false);
         $me = $this->user_getByLogin($login, $password);
         if($me == null)
-            return false;
+            throw new Exception("User not found", 404);
         $_SESSION["uid"] = $me["id"];
         $this->user = $me;
         $this->perms = $me["permissions"];
@@ -168,7 +168,6 @@ class System
             $this->logout();
             throw $e;
         }
-        return true;
     }
     public function logout($removeCookie=true)
     {
@@ -188,8 +187,6 @@ class System
         session_start();
         $this->perms = $public_permissions;
         $this->user = null;
-        
-        return true;
     }
     public function current_user()
     {
