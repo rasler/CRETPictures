@@ -26,6 +26,25 @@ CREATE TABLE IF NOT EXISTS `cret_permissions` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `cret_pictures`
+--
+
+CREATE TABLE IF NOT EXISTS `cret_pictures` (
+  `pid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) unsigned NOT NULL,
+  `file` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `size` bigint(20) unsigned NOT NULL,
+  `public` tinyint(1) NOT NULL DEFAULT '0',
+  `title` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `publication` datetime NOT NULL,
+  `creation` datetime DEFAULT NULL,
+  PRIMARY KEY (`pid`),
+  UNIQUE KEY `uid` (`uid`,`file`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `cret_users`
 --
 
@@ -49,3 +68,9 @@ CREATE TABLE IF NOT EXISTS `cret_users` (
 --
 ALTER TABLE `cret_permissions`
   ADD CONSTRAINT `cret_permissions_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `cret_users` (`uid`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `cret_pictures`
+--
+ALTER TABLE `cret_pictures`
+  ADD CONSTRAINT `cret_pictures_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `cret_users` (`uid`) ON DELETE CASCADE ON UPDATE NO ACTION;

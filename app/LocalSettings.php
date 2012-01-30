@@ -13,5 +13,7 @@ $pi_db_prefix = "cret_";
 $public_permissions = array();
 $default_permissions = array("application.login");
 
+# Users data
+$pi_data_path = "C:/Users/Public/Pictures/CRETPictures/";
 
 ?>

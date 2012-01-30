@@ -75,7 +75,7 @@ class System
         if(!isset($user["id"])||!isset($user["login"]))
             throw new Exception ("Invalid user");
         if(!isset($this->user["id"]) || $user["id"] != $this->user["id"])
-                    $this->permissions_require ("admin.user.update");
+            $this->permissions_require ("admin.user.update");
         if(isset($user["password"]))
         {
             $rs = $this->db->prepare('UPDATE '.$this->prfx.'users SET login = ?, pass = ?  WHERE uid = ? LIMIT 1');
@@ -92,7 +92,7 @@ class System
         if(!isset($user["id"])||!isset($user["login"]))
             throw new Exception ("Invalid user");
         if(!isset($this->user["id"]) || $user["id"] != $this->user["id"])
-                    $this->permissions_require ("admin.user.delete");
+            $this->permissions_require ("admin.user.delete");
         $rs = $this->db->prepare('DELETE FROM '.$this->prfx.'users WHERE uid = ? AND login = ? LIMIT 1');
         $rs->execute(array($user["id"], $user["login"]));
     }
@@ -213,5 +213,9 @@ class System
             $this->perms = $public_permissions;
     }
     
+    public function get_db()
+    {
+        return $this->db;
+    }
 }
 ?>
