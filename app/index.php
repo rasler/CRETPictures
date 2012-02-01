@@ -2,8 +2,8 @@
 require 'Slim/Slim.php';
 require_once 'System.class.php';
 
-$app = new Slim();
 $system = new System();
+$app = new Slim();
 
 // Exemple d'utilisation
 //$app->get('/hello/:name', function ($name) {

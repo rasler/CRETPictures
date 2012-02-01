@@ -200,9 +200,7 @@ class System
         $this->db = new PDO('mysql:host='.$pi_db_host.';dbname='.$pi_db_name,$pi_db_user,$pi_db_pass);
         $this->prfx = $pi_db_prefix;
         
-        // on affecte une valeur à la session pour être sur qu'elle est démarée
-        // cette valeur pourra être utile si l'on veut mettre un timeout
-        $_SESSION["lastAcces"] = time();
+        session_start();
         
         if(isset($_SESSION["uid"]))
         {
