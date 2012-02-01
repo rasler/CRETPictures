@@ -52,7 +52,7 @@ class PicturesHandler
         $rs->execute(array($uid));
         $pictures = $rs->fetchAll(PDO::FETCH_NAMED);
         
-        return $this->recursivePicturesAnswer("", $pictures, $this->path.$user["login"]);
+        return $this->recursivePicturesAnswer("", $pictures, $this->path.$login);
     }
     
     private function recursivePicturesAnswer($dir, $pic, $root)
@@ -91,6 +91,50 @@ class PicturesHandler
                 $i++;
             }
         }
+        return $ret;
+    }
+    
+    public function pictures_getByID($id)
+    {
+        $rs = $this->db->prepare('SELECT * FROM '.$this->prfx.'pictures WHERE pid=?');
+        $rs->execute(array($id));
+        if($rs->rowCount() != 1)
+        {
+            $this->system->permissions_require("admin.picture.read");
+            throw new Exception("Picture Not Found", 404);
+        }
+        $pict = $rs->fetch(PDO::FETCH_NAMED);
+        $user = $this->system->current_user();
+        if($user == null || $user["id"] != $pict["uid"])
+            $this->system->permissions_require("admin.picture.read");
+        return $pict;
+    }
+    
+    public function pictures_getThumb($id, $w, $h)
+    {
+        $rs = $this->db->prepare('SELECT pid, file, public, uid, login FROM '.$this->prfx.'pictures LEFT JOIN '.$this->prfx.'users USING(uid) WHERE pid=?');
+        $rs->execute(array($id));
+        if($rs->rowCount() != 1)
+        {
+            $this->system->permissions_require("admin.picture.read");
+            throw new Exception("Picture Not Found", 404);
+        }
+        $pict = $rs->fetch(PDO::FETCH_NAMED);
+        $user = $this->system->current_user();
+        if($pict["public"] == 0 && ($user == null || $user["id"] != $pict["uid"]))
+            $this->system->permissions_require("admin.picture.read");
+        if(!file_exists($this->path.$pict["login"].'/'.$pict["file"]))
+            throw new Exception("Picture Not Found Locally", 404);
+        
+        $orig = imagecreatefromjpeg($this->path.$pict["login"].'/'.$pict["file"]);
+        $ow = imagesx($orig);
+        $oh = imagesy($orig);
+        $ret = imagecreatetruecolor($w, $h);
+        $r1 = $w/$h;
+        $r2 = $ow/$oh;
+        $a = $r1 > $r2 ? $ow : $oh * $w / $h;
+        $b = $r1 > $r2 ? $ow * $h / $w : $oh;
+        imagecopyresized($ret, $orig, 0, 0, ($ow-$a)/2, ($oh-$b)/2, $w, $h, $a, $b);
         return $ret;
     }
     
