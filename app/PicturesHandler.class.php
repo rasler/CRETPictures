@@ -39,7 +39,7 @@ class PicturesHandler
             $login = $user["login"];
         else
         {
-            $this->system->permissions_require("application.admin.picture.read");
+            $this->system->permissions_require("admin.picture.read");
             $rs = $this->db->prepare('SELECT login FROM '.$this->prfx.'users WHERE uid=?');
             $rs->execute(array($uid));
             if($rs->rowCount() != 1)
