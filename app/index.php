@@ -1,8 +1,10 @@
 <?php
 require 'Slim/Slim.php';
 require_once 'System.class.php';
+require_once 'PicturesHandler.class.php';
 
 $system = new System();
+$pictures = new PicturesHandler($system);
 $app = new Slim();
 
 // Exemple d'utilisation
@@ -52,6 +54,12 @@ $app->delete('/user/:login/permission/:perm', function ($login, $perm) {
     echo json_encode($system->permissions_revoke($user["id"], $perm));
 });
 
+$app->get('/user/:login/folder', function ($login) {
+    global $system, $pictures;
+    $user = $system->user_getByLogin($login);
+    echo json_encode($user == null ? null : $pictures->pictures_getByUserID($user["id"]));
+});
+
 $app->post('/session', function () use ($app) {
     global $system;
     echo json_encode($system->login($app->request()->get('login'), $app->request()->get('password')));
@@ -65,6 +73,12 @@ $app->delete('/session' , function () {
 $app->get('/session/user' , function () {
     global $system;
     echo json_encode($system->current_user());
+});
+
+$app->get('/session/folder' , function () {
+    global $system, $pictures;
+    $user = $system->current_user();
+    echo json_encode($user == null ? null : $pictures->pictures_getByUserID($user["id"]));
 });
 
 $app->run();

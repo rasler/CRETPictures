@@ -19,17 +19,79 @@ class PicturesHandler
     
     public function pictures_upload($fullName, $tmpFile)
     {
-        var_dump($this->system->current_user());
         $this->system->permissions_require("application.picture.upload");
         $user = $this->system->current_user();
         $rs = $this->db->prepare('INSERT INTO '.$this->prfx.'pictures (uid, file, size, title, publication, creation) VALUES(?,?,?,?,NOW(),?)');
         //$meta = exif_read_data($tmpFile, 'IFD0', 0); bug : n'arrive pas à trouver l'extantion exif en local ?
         $rs->execute(array($user["id"], $fullName, filesize($tmpFile), basename($fullName), isset($meta["DateTimeOriginal"])?$meta["DateTimeOriginal"]:null));
         $pid = $this->db->lastInsertId();
-        if(!file_exists(dirname($this->path.$user["login"].'/'.$fullName)))
+        if(!is_dir(dirname($this->path.$user["login"].'/'.$fullName)))
             mkdir (dirname($this->path.$user["login"].'/'.$fullName));
         rename($tmpFile, $this->path.$user["login"].'/'.$fullName);
         return $pid;
+    }
+    
+    public function pictures_getByUserID($uid)
+    {
+        $login = null;
+        $user = $this->system->current_user();
+        if($user != null && $user["id"] == $uid)
+            $login = $user["login"];
+        else
+        {
+            $this->system->permissions_require("application.admin.picture.read");
+            $rs = $this->db->prepare('SELECT login FROM '.$this->prfx.'users WHERE uid=?');
+            $rs->execute(array($uid));
+            if($rs->rowCount() != 1)
+                throw new Exception("User not found", 404);
+            $user = $rs->fetch(PDO::FETCH_NAMED);
+            $login = $user["login"];
+        }
+        
+        $rs = $this->db->prepare('SELECT pid, file, size, public, title, publication, creation FROM '.$this->prfx.'pictures WHERE uid=?');
+        $rs->execute(array($uid));
+        $pictures = $rs->fetchAll(PDO::FETCH_NAMED);
+        
+        return $this->recursivePicturesAnswer("", $pictures, $this->path.$user["login"]);
+    }
+    
+    private function recursivePicturesAnswer($dir, $pic, $root)
+    {
+        $ret = array();
+        $i = 0;
+        
+        // ne pas lire si le dossier n'existe pas
+        if(!is_dir($root.$dir))
+            return $ret;
+        
+        // lecture des dossiers
+        if($dossier = opendir($root.$dir))
+        {
+            while(false !== ($fichier = readdir($dossier)))
+            {
+                if(is_dir($root.$dir.'/'.$fichier)&&$fichier!="."&&$fichier!="..")
+                {
+                    $ret[$i]["content"] = $this->recursivePicturesAnswer($dir.'/'.$fichier, $pic, $root);
+                    $ret[$i]["type"] = "folder";
+                    $ret[$i]["name"] = $fichier;
+                    $i++;
+                }
+            }
+        }
+        
+        // lecture des images (depuis la réponse de la BDD)
+        foreach($pic as $p)
+        {
+            if($dir == "") $dir = ".";
+            if('/'.dirname($p["file"]) == $dir)
+            {
+                $ret[$i] = $p;
+                $ret[$i]["type"] = "picture";
+                $ret[$i]["name"] = basename($p["file"]);
+                $i++;
+            }
+        }
+        return $ret;
     }
     
     public function __construct($system)
