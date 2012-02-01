@@ -13,7 +13,9 @@
         }
         catch(Exception $e)
         {
-
+            echo("erreur de connexion");
+            header('Location: errorcon.php'); 
+            
         }
     }
     else if($_GET["do"] == "logout")
