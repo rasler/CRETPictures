@@ -31,7 +31,7 @@ class PicturesHandler
         return $pid;
     }
     
-    public function pictures_getByUserID($uid)
+    public function pictures_getFolderByUserID($uid)
     {
         $login = null;
         $user = $this->system->current_user();
