@@ -1,0 +1,122 @@
+/* 
+    Document   : CSSClassDef
+    Created on : 25 janv. 2012, 12:52:32
+    Author     : Madeleine
+    Description:
+        Définition de toutes les div utilisées dans le projet
+*/
+
+body{
+    margin: 0;
+    padding: 0;
+    background: #1F1F1F;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    color: #777474;
+}
+
+#global{
+    margin: 0 auto;
+    width: 1300px;
+    background-color: #191919;
+    text-align: left;
+}
+
+#header{
+    height: 150px;
+    position: relative;
+    -webkit-border-image: url('../images/header.jpg') 1 1 1 1 stretch stretch;
+}
+
+#header img{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+}
+
+#header h1{
+    position : absolute ;
+    bottom: 0px;
+    left : 15px ; 
+    margin : 0;
+    padding : 0 ;
+    text-transform : uppercase; 
+}
+
+#header h1 a{
+    color: black;
+    text-decoration: none;
+}
+
+#encartConnexion{
+    width:450px;
+    height: 100px;
+    position: absolute;
+    float: left;
+    margin: -10px 0 15px 1005px;
+    color: #ffffff;
+    font-size: 14px;
+}
+
+#encartConnexion a{
+    color: #ffffff;
+} 
+
+#barre_menu{
+    margin-top: 5px;
+    width: 196px;
+    float  : left;
+    padding :  0;
+    text-align : justify; 
+}
+
+#barre_menu h2{
+    margin : 0;
+    padding :  0 0 0 10px;
+    color : #000;
+    background: url('../images/side-h2.jpg');
+    text-decoration: none;
+    height : 37px;
+    line-height : 37px;
+    text-transform : uppercase;
+    font-weight : normal;
+}
+
+#barre_menu h2 a{
+    text-decoration: none;
+}
+
+#barre_menu ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#barre_menu li{
+    -webkit-border-image: url('../images/side-li.jpg') 1 1 1 1 stretch stretch;
+    height : 35px;
+    line-height : 35px;
+    margin: 0;
+}
+
+#barre_menu li a{
+    display: block;
+    text-decoration: none;
+    padding-left: 35px;
+    text-transform : uppercase;
+}
+
+#barre_menu li a:hover{ color: #3F3F3F; }
+
+#corps{
+    margin: 0;
+    margin-top: 5px;
+    margin-left: 5px;
+    padding: 20px 10px 0px 20px;
+    float: left;
+    background: silver;
+    width: 1069px;
+    overflow-y: scroll;
+    text-decoration: none;
+}
