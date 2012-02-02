@@ -13,7 +13,8 @@
         }
         catch(Exception $e)
         {
-
+            header('Location: errorcon.php'); 
+            
         }
     }
     else if($_GET["do"] == "logout")
