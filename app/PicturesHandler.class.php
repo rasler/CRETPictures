@@ -82,8 +82,7 @@ class PicturesHandler
         // lecture des images (depuis la réponse de la BDD)
         foreach($pic as $p)
         {
-            if($dir == "") $dir = ".";
-            if('/'.dirname($p["file"]) == $dir)
+            if('/'.dirname($p["file"]) == $dir || ($dir == "" && dirname($p["file"]) == "."))
             {
                 $ret[$i] = $p;
                 $ret[$i]["type"] = "picture";
