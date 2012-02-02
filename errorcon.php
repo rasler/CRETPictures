@@ -3,7 +3,7 @@
 <span class ="errorcon">  
     <form method="post" enctype="multipart/form-data" action="conex.php">
         <fieldset>
-            <legend>Connexion</legend> <!-- Titre du fieldset -->
+            <legend>Erreur de Connexion</legend> <!-- Titre du fieldset -->
 
             <label for="nom">Login ...... :  </label>
             <input type="text" name="nom" id="nom" tabindex="10" /><br />
