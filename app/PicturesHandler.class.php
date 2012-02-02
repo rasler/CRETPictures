@@ -109,7 +109,7 @@ class PicturesHandler
         return $pict;
     }
     
-    public function pictures_getThumb($id, $w, $h)
+    private function pictures_localise($id)
     {
         $rs = $this->db->prepare('SELECT pid, file, public, uid, login FROM '.$this->prfx.'pictures LEFT JOIN '.$this->prfx.'users USING(uid) WHERE pid=?');
         $rs->execute(array($id));
@@ -125,7 +125,12 @@ class PicturesHandler
         if(!file_exists($this->path.$pict["login"].'/'.$pict["file"]))
             throw new Exception("Picture Not Found Locally", 404);
         
-        $orig = imagecreatefromjpeg($this->path.$pict["login"].'/'.$pict["file"]);
+        return $this->path.$pict["login"].'/'.$pict["file"];
+    }
+    
+    public function pictures_getThumb($id, $w, $h)
+    {
+        $orig = imagecreatefromjpeg($this->pictures_localise($id));
         $ow = imagesx($orig);
         $oh = imagesy($orig);
         $ret = imagecreatetruecolor($w, $h);
@@ -135,6 +140,41 @@ class PicturesHandler
         $b = $r1 > $r2 ? $ow * $h / $w : $oh;
         imagecopyresized($ret, $orig, 0, 0, ($ow-$a)/2, ($oh-$b)/2, $w, $h, $a, $b);
         return $ret;
+    }
+        
+    public function pictures_readFile($id)
+    {
+        readfile($this->pictures_localise($id));
+    }
+    
+    public function pictures_resize($id, $w, $h)
+    {
+        $orig = imagecreatefromjpeg($this->pictures_localise($id));
+        $ow = imagesx($orig);
+        $oh = imagesy($orig);
+        if($w == null && $h == null)
+        {
+            return $orig;
+        }
+        if($w != null && $h != null)
+        {
+            if($w/$ow < $h/$oh)
+                $h=null;
+            else
+                $w = null;
+        }
+        if($w != null && $h == null)
+        {
+            $ret = imagecreatetruecolor($w, $oh*($w/$ow));
+            imagecopyresized($ret, $orig, 0, 0, 0, 0, $w, $oh*($w/$ow), $ow, $oh);
+            return $ret;
+        }
+        if($w == null && $h != null)
+        {
+            $ret = imagecreatetruecolor($ow*($h/$oh), $h);
+            imagecopyresized($ret, $orig, 0, 0, 0, 0, $ow*($h/$oh), $h, $ow, $oh);
+            return $ret;
+        }
     }
     
     public function __construct($system)

@@ -12,6 +12,35 @@ $app->get('/picture/:id', function ($id) {
     echo json_encode($pictures->pictures_getByID($id));
 });
 
+$app->get('/picture/:id/source', function ($id) use ($app)  {
+    global $pictures;
+    $response = $app->response();
+    $response->header('Content-Type', 'image');
+    //echo imagejpeg($pictures->pictures_resize($id, $x, $y));
+    $pictures->pictures_readFile($id);
+});
+
+$app->get('/picture/:id/resize/(:x)x(:y)', function ($id, $x, $y) use ($app)  {
+    global $pictures;
+    $response = $app->response();
+    $response->header('Content-Type', 'image/jpeg');
+    echo imagejpeg($pictures->pictures_resize($id, $x, $y));
+});
+
+$app->get('/picture/:id/resize/(:x)x', function ($id, $x) use ($app)  {
+    global $pictures;
+    $response = $app->response();
+    $response->header('Content-Type', 'image/jpeg');
+    echo imagejpeg($pictures->pictures_resize($id, $x, null));
+});
+
+$app->get('/picture/:id/resize/x(:y)', function ($id, $y) use ($app)  {
+    global $pictures;
+    $response = $app->response();
+    $response->header('Content-Type', 'image/jpeg');
+    echo imagejpeg($pictures->pictures_resize($id, null, $y));
+});
+
 $app->get('/picture/:id/thumb/(:x)x(:y)', function ($id, $x, $y) use ($app)  {
     global $pictures;
     $response = $app->response();
