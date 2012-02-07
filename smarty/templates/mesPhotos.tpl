@@ -6,7 +6,7 @@
 
 {block name=styles}<link rel="stylesheet" type="text/css" href="CSSFiles/structure.css"/>{/block}
 
-{block name=img}<img src="../images/logo_cret.png" alt="logo" title="logo" width="125px" />{/block}
+{block name=img}<img src="/images/logo_cret.png" alt="logo" title="logo" width="125px" />{/block}
 
 {block name=encartConnexion}
     <br/><br/>
@@ -27,8 +27,5 @@
 {/block}
 
 {block name=body}
-<div id="bigBlock">
-</div>
-<div id="secondBlock">
-</div>
+
 {/block}

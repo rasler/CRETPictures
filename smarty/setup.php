@@ -5,9 +5,17 @@
  *
  * @author Madeleine
  */
-    define('SMARTY_DIR','C:/Users/Madeleine/Documents/NetBeansProjects/Smarty-3.1.7/libs/');
-    require(SMARTY_DIR.'Smarty.class.php');
-    
+    #define('SMARTY_DIR','C:/Users/Madeleine/Documents/NetBeansProjects/Smarty-3.1.7/libs/');
+    try {
+        define('SMARTY_DIR','/Smarty-3.1.7/libs/'); 
+        require(SMARTY_DIR.'Smarty.class.php');
+    }
+    catch (Exception $exc) {
+        define('SMARTY_DIR', 'Smarty-3.1.7/libs/');
+        require(SMARTY_DIR.'Smarty.class.php');
+    }
+
+  
     class Smarty_CRETPictures extends Smarty {
         //constructeur
         function Smarty_CRETPictures(){

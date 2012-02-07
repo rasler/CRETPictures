@@ -113,10 +113,36 @@ body{
     margin: 0;
     margin-top: 5px;
     margin-left: 5px;
+    font-size: 16px;
     padding: 20px 10px 0px 20px;
     float: left;
     background: silver;
     width: 1069px;
+    height: auto;
     overflow-y: scroll;
     text-decoration: none;
+}
+
+#corps .bigBlock{
+    margin: -15px 0 0 0;
+    padding: 0;
+    width: 535px;
+    height: 535px;
+    border-style: double;
+    background: transparent;
+    overflow: scroll;
+    position: absolute;
+}
+
+#corps .secondBlock{
+    margin: -15px 0 0 540px;
+    padding: 0;
+    float: left;
+    width: 535px;
+    height: 535px;
+    background: transparent;
+    border-style: double;
+    overflow: scroll;
+    position: absolute;
+    
 }
