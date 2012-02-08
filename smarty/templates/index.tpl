@@ -28,4 +28,5 @@
 
 {block name=body}
 Présentation du site !!
+blablablablabla
 {/block}
