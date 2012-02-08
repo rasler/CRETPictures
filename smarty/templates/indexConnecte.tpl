@@ -21,9 +21,27 @@
 {/block}
 
 {block name=menu}
-    <h2><a href="#">Mon profil</a></h2>
-    <h2><a href="PagesSite/mesPhotos.php">Mes photos</a></h2>
-    <h2><a href="PagesSite/ajoutPhoto.php">Ajouter photos</a></h2>
+    {if $perms[0] == true || $perms[1] == true || $perms[2] == true || $perms[3] == true}
+    <h2>Gestion des utilisateurs</h2>
+    <ul>
+        {if $perms[0] == true}<li><a href="#">Ajout d'utilisateur(s)</a></li>{/if}
+        {if $perms[1] == true}<li><a href="#">Consultation de compte utilisateur</a></li>{/if}
+        {if $perms[2] == true}<li><a href="#">Mise à jour des utilisateurs</a></li>{/if}
+        {if $perms[3] == true}<li><a href="#">Suppression d'utilisateur(s)</a></li>{/if}
+    </ul>
+    {/if}
+
+    <h2>Gestion de profil</h2>
+    <ul>
+        <li><a href="#">Mon profil perso</a></li>
+        <li><a href="#">Profils partagés</a></li>
+    </ul>
+
+    <h2>Gestion de photos</h2>
+    <ul>
+        <li><a href="PagesSite/mesPhotos.php">Mes photos</a></li>
+        {if $perms[7] == true}<li><a href="PagesSite/ajoutPhoto.php">Ajout de photos</a></li>{/if}
+    </ul>
 {/block}
 
 {block name=body}

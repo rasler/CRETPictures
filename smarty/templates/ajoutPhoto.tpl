@@ -14,12 +14,12 @@
             <span font-size="16px">Bienvenu {$name="Utilisateur1"} sur votre compte!</span>
         </tr><br/><br/>
         <tr>
-            <a href="/connexion.php">Se déconnecter</a>
+            <a href="../index.php?do=logout">Se déconnecter</a>
         <tr/>
     </table>
 {/block}
 
-{* --------------------------------------BLOCK STYLES--------------------------------------------------------- *}
+{* ________________________________________________ BLOCK STYLES ________________________________________________ *}
 
 {block name="styles"}
 <style type="text/css">
@@ -66,6 +66,8 @@
 </style>
 {/block}
 
+{* _______________________________________________ BLOCK SCRIPTJS _______________________________________________ *}
+
 {block name=scriptjs}
     <script type="text/javascript">
         i = 0;
@@ -82,23 +84,44 @@
     </script>
 {/block}
 
-{* --------------------------------------BLOCK MENU--------------------------------------------------------- *}
+{* _________________________________________________ BLOCK MENU _________________________________________________ *}
 
 {block name=menu}
-    <h2><a href="#">Mon profil</a></h2>
-    <h2><a href="../PagesSite/mesPhotos.php">Mes photos</a></h2>
-    <h2><a href="../PagesSite/ajoutPhoto.php">Ajouter photos</a></h2>
+    {if $perms[0] == true || $perms[1] == true || $perms[2] == true || $perms[3] == true}
+    <h2>Gestion des utilisateurs</h2>
+    <ul>
+        {if $perms[0] == true}<li><a href="#">Ajout d'utilisateur(s)</a></li>{/if}
+        {if $perms[1] == true}<li><a href="#">Consultation de compte utilisateur</a></li>{/if}
+        {if $perms[2] == true}<li><a href="#">Mise à jour des utilisateurs</a></li>{/if}
+        {if $perms[3] == true}<li><a href="#">Suppression d'utilisateur(s)</a></li>{/if}
+    </ul>
+    {/if}
+
+    <h2>Gestion de profil</h2>
+    <ul>
+        <li><a href="#">Mon profil perso</a></li>
+        <li><a href="#">Profils partagés</a></li>
+    </ul>
+
+    <h2>Gestion de photos</h2>
+    <ul>
+        <li><a href="PagesSite/mesPhotos.php">Mes photos</a></li>
+        {if $perms[7] == true}<li><a href="PagesSite/ajoutPhoto.php">Ajout de photos</a></li>{/if}
+    </ul>
 {/block}
 
-{* --------------------------------------BLOCK BODY--------------------------------------------------------- *}
+{* _________________________________________________ BLOCK BODY _________________________________________________ *}
 
 {block name=body}
+
     <!--C'est dans cette table que va être affichée le calendrier-->
     <table class="ds_box" cellpadding="0" cellspacing="0" id="container" style="display: none;">
         <tr>
             <td id="output_el"></td>
         </tr>
     </table>
+
+{* ############################################  SCRIPT CALENDRIER  ############################################# *}
 
     <script type="text/javascript">
         //initDate est la date actuelle (on ouvre le calendrier au mois correspondant)
@@ -294,16 +317,30 @@
         }
     </script>
 
-{*__________________________________FORMULAIRE D'AJOUT DE PHOTO_____________________________________________*}
+    <script>
+        function validerForm(){
+            if(document.formulaire.value == NULL){
+                alert("Veuillez choisir un fichier!");
+        }
+    </script>
 
-    <form method="POST" enctype="multipart/form-data" action="../PagesSite/ajoutPhoto.php?do=ajout">
+{* ################################################  FORMULAIRE  ################################################ *}
+
+    <form method="POST" name="formulaire" enctype="multipart/form-data" action="../PagesSite/ajoutPhoto.php?do=ajout">
         <div class="infosSaisies">
             <input type="file" name="photoFile" value=""/><br/>
-            <span color="#fff">Titre de la photo (facultatif): </span><input type="text" name="titlePic"/><br/>
-            Date de la prise de la photo : <input onclick="calendarShow(this);" name="date" readonly="readonly" style="cursor: text" /><br />
+            
+            <span color="#fff">Titre de la photo (facultatif): </span>
+            <input type="text" name="titlePic"/><br/>
+            
+            Date de la prise de la photo : 
+            <input onclick="calendarShow(this);" name="date" readonly="readonly" style="cursor: text" /><br />
+            
             Personnes apparaissant sur la photo : <br/>
             <textarea name="listPersonnes" rows="5" cols="50"></textarea><br/>
-            <input type="submit" value="Valider" />
+
+            <input type="submit" value="Valider" onclick="validerForm();" />
         </div>
     </form>
+
 {/block}

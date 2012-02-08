@@ -22,7 +22,7 @@
             </div>
 
             <div id="barre_menu">  
-                <h2>Trier les photos</h2>
+                <h2>Tri des photos</h2>
                 <ul>
                     <li><a href="#">par lieu</li>
                     <li><a href="#">par personne</li>

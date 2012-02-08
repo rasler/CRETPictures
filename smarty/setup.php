@@ -7,6 +7,7 @@
  */
     #define('SMARTY_DIR','C:/Users/Madeleine/Documents/NetBeansProjects/Smarty-3.1.7/libs/');
     if(file_exists('/Smarty-3.1.7/libs/')){ define('SMARTY_DIR','/Smarty-3.1.7/libs/'); }
+    else if(file_exists ('Smarty-3.1.7/libs/')){ define('SMARTY_DIR','Smarty-3.1.7/libs/');  }
     else{   define('SMARTY_DIR', '../Smarty-3.1.7/libs/'); }
     
     require(SMARTY_DIR.'Smarty.class.php');
