@@ -22,12 +22,12 @@
 
 {block name=menu}
     {if $perms[0] == true || $perms[1] == true || $perms[2] == true || $perms[3] == true}
-    <h2>Gestion des utilisateurs</h2>
+    <h2>Administration</h2>
     <ul>
-        {if $perms[0] == true}<li><a href="#">Ajout d'utilisateur(s)</a></li>{/if}
-        {if $perms[1] == true}<li><a href="#">Consultation de compte utilisateur</a></li>{/if}
-        {if $perms[2] == true}<li><a href="#">Mise à jour des utilisateurs</a></li>{/if}
-        {if $perms[3] == true}<li><a href="#">Suppression d'utilisateur(s)</a></li>{/if}
+        {if $perms[0] == true}<li><a href="#">Ajout user(s)</a></li>{/if}
+        {if $perms[1] == true}<li><a href="#">Comptes user(s)</a></li>{/if}
+        {if $perms[2] == true}<li><a href="#">Mise à jour user(s)</a></li>{/if}
+        {if $perms[3] == true}<li><a href="#">Suppression user(s)</a></li>{/if}
     </ul>
     {/if}
 
@@ -46,7 +46,8 @@
 
 {block name=body}
 <table>
-<h2>Photos en vrac</h2>
-
+{if $perms[6] == true}
+    <h2>Photos en vrac</h2>
+{/if}
 </table>
 {/block}
