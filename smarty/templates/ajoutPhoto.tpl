@@ -14,7 +14,7 @@
             <span font-size="16px">Bienvenu {$name="Utilisateur1"} sur votre compte!</span>
         </tr><br/><br/>
         <tr>
-            <a href="../index.php?do=logout">Se déconnecter</a>
+            <a href="../connexion.php?do=logout">Se déconnecter</a>
         <tr/>
     </table>
 {/block}
@@ -318,20 +318,19 @@
     </script>
 
     <script>
-        function validerForm(){
-            if(document.formulaire.value == NULL)
+        function validerForm(formulaire){
+            if(document.forms["formulaire"]["photoFile"].value == ""){
                 alert("Veuillez choisir un fichier!");
-            else{
-                //vérifier l'extension du nom, si renseigné
-                document.formulaire
+                return false;
             }
-                
+            return true;    // formulaire valide
         }
     </script>
 
 {* ################################################  FORMULAIRE  ################################################ *}
 
-    <form method="POST" name="formulaire" enctype="multipart/form-data" action="../PagesSite/ajoutPhoto.php?do=ajout">
+    <form method="POST" name="formulaire" enctype="multipart/form-data" 
+        action="../PagesSite/ajoutPhoto.php?do=ajout" onsubmit="return validerForm(this)">
         <div class="infosSaisies">
             <input type="file" name="photoFile" value=""/><br/>
             
@@ -344,7 +343,7 @@
             Personnes apparaissant sur la photo : <br/>
             <textarea name="listPersonnes" rows="5" cols="50"></textarea><br/>
 
-            <input type="submit" value="Valider" onclick="validerForm();" />
+            <input type="submit" value="Valider" />
         </div>
     </form>
 

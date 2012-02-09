@@ -18,7 +18,11 @@
             header('Location: index.php');
         }
         catch(Exception $e){
-            header('Location: errorCon.php');
+            require_once 'smarty/setup.php';
+            $smarty = new Smarty_CRETPictures();
+            
+            $smarty->assign("connexion", "failed");
+            $smarty->display('index.tpl');
         }
     }
     else if($_GET["do"] == "logout"){

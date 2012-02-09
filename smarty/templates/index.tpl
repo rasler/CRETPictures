@@ -8,6 +8,10 @@
 {block name=img}<img src="images/logo_cret.png" alt="logo" title="logo" width="125px" />{/block}
 
 {block name=encartConnexion}
+{assign var="connexion" value=$connexion|default:"OK"}
+{if $connexion eq "failed"}
+    <div id="erreur">Erreur connexion !!</div>
+{/if}
 <form method="POST" action="connexion.php?do=login">
     <table>
         <tr>
@@ -21,7 +25,7 @@
         <tr>
             <td><input type="submit" value="Login"/></td>
             <td><a href="#">S'inscrire</a></td>
-        <tr/>
+        </tr>
     </table>
 </form>
 {/block}

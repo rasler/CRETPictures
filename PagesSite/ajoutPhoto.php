@@ -24,15 +24,21 @@
     $smarty->display('ajoutPhoto.tpl');
     
     if(isset($_GET['do']) && $_GET['do'] == 'ajout'){
-        
-
         require_once('../app/PicturesHandler.class.php');
         $phandler = new PicturesHandler($sys);
-        
+
         $photo = $_FILES['photoFile']['tmp_name'];
 
         if(isset($_POST['titlePic']) && $_POST['titlePic'] != ""){
-            $phandler->pictures_upload($_POST['titlePic'], $photo);
+            $extension = strrchr($_POST['titlePic'],".");
+            if($extension == FALSE){
+                echo 'extension = '.$extension;
+                $POST['titlePic'] = $_POST['titlePic'].'.jpg';
+                echo 'nom fichier = '.$POST['titlePic'];
+                $phandler->pictures_upload($POST['titlePic'], $photo);
+            }
+            else
+                $phandler->pictures_upload($_POST['titlePic'], $photo);
         }
         else{
             $phandler->pictures_upload($_FILES['photoFile']['name'], $photo);
