@@ -20,18 +20,18 @@ $app->get('/picture/:id/source', function ($id) use ($app)  {
     $pictures->pictures_readFile($id);
 });
 
-$app->get('/picture/:id/resize/(:x)x(:y)', function ($id, $x, $y) use ($app)  {
-    global $pictures;
-    $response = $app->response();
-    $response->header('Content-Type', 'image/jpeg');
-    echo imagejpeg($pictures->pictures_resize($id, $x, $y));
-});
-
 $app->get('/picture/:id/resize/(:x)x', function ($id, $x) use ($app)  {
     global $pictures;
     $response = $app->response();
     $response->header('Content-Type', 'image/jpeg');
     echo imagejpeg($pictures->pictures_resize($id, $x, null));
+});
+
+$app->get('/picture/:id/resize/(:x)x(:y)', function ($id, $x, $y) use ($app)  {
+    global $pictures;
+    $response = $app->response();
+    $response->header('Content-Type', 'image/jpeg');
+    echo imagejpeg($pictures->pictures_resize($id, $x, $y));
 });
 
 $app->get('/picture/:id/resize/x(:y)', function ($id, $y) use ($app)  {
@@ -48,6 +48,10 @@ $app->get('/picture/:id/thumb/(:x)x(:y)', function ($id, $x, $y) use ($app)  {
     echo imagejpeg($pictures->pictures_getThumb($id, $x, $y));
 });
 
+$app->delete('/picture/:id', function ($id)  {
+    global $pictures;
+    echo json_encode($pictures->pictures_remove($id));
+});
 
 $app->get('/user/', function () {
     global $system;

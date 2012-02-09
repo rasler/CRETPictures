@@ -16,7 +16,7 @@ class PicturesHandler
         $this->system->permissions_require("application.picture.upload");
         mkdir($this->path.$this->usr_login."/".$fullName);
     }
-    
+       
     public function pictures_upload($fullName, $tmpFile)
     {
         $this->system->permissions_require("application.picture.upload");
@@ -95,7 +95,7 @@ class PicturesHandler
     
     public function pictures_getByID($id)
     {
-        $rs = $this->db->prepare('SELECT * FROM '.$this->prfx.'pictures WHERE pid=?');
+        $rs = $this->db->prepare('SELECT p.*, login as owner FROM '.$this->prfx.'pictures p LEFT JOIN '.$this->prfx.'users u USING(uid) WHERE pid=?');
         $rs->execute(array($id));
         if($rs->rowCount() != 1)
         {
@@ -104,33 +104,18 @@ class PicturesHandler
         }
         $pict = $rs->fetch(PDO::FETCH_NAMED);
         $user = $this->system->current_user();
-        if($user == null || $user["id"] != $pict["uid"])
+        if(($user == null || $user["id"] != $pict["uid"]) && $pict["public"] == 0)
             $this->system->permissions_require("admin.picture.read");
         return $pict;
     }
     
-    private function pictures_localise($id)
-    {
-        $rs = $this->db->prepare('SELECT pid, file, public, uid, login FROM '.$this->prfx.'pictures LEFT JOIN '.$this->prfx.'users USING(uid) WHERE pid=?');
-        $rs->execute(array($id));
-        if($rs->rowCount() != 1)
-        {
-            $this->system->permissions_require("admin.picture.read");
-            throw new Exception("Picture Not Found", 404);
-        }
-        $pict = $rs->fetch(PDO::FETCH_NAMED);
-        $user = $this->system->current_user();
-        if($pict["public"] == 0 && ($user == null || $user["id"] != $pict["uid"]))
-            $this->system->permissions_require("admin.picture.read");
-        if(!file_exists($this->path.$pict["login"].'/'.$pict["file"]))
-            throw new Exception("Picture Not Found Locally", 404);
-        
-        return $this->path.$pict["login"].'/'.$pict["file"];
-    }
-    
     public function pictures_getThumb($id, $w, $h)
     {
-        $orig = imagecreatefromjpeg($this->pictures_localise($id));
+        $pic = $this->pictures_getByID($id);
+        if(!file_exists($this->path.$pic["owner"].'/'.$pic["file"]))
+            throw new Exception("Picture Not Found Locally", 404);
+        
+        $orig = imagecreatefromjpeg($this->path.$pic["owner"].'/'.$pic["file"]);
         $ow = imagesx($orig);
         $oh = imagesy($orig);
         $ret = imagecreatetruecolor($w, $h);
@@ -144,12 +129,20 @@ class PicturesHandler
         
     public function pictures_readFile($id)
     {
-        readfile($this->pictures_localise($id));
+        $pic = $this->pictures_getByID($id);
+        if(!file_exists($this->path.$pic["owner"].'/'.$pic["file"]))
+            throw new Exception("Picture Not Found Locally", 404);
+        
+        readfile($this->path.$pic["owner"].'/'.$pic["file"]);
     }
     
     public function pictures_resize($id, $w, $h)
     {
-        $orig = imagecreatefromjpeg($this->pictures_localise($id));
+        $pic = $this->pictures_getByID($id);
+        if(!file_exists($this->path.$pic["owner"].'/'.$pic["file"]))
+            throw new Exception("Picture Not Found Locally", 404);
+        
+        $orig = imagecreatefromjpeg($this->path.$pic["owner"].'/'.$pic["file"]);
         $ow = imagesx($orig);
         $oh = imagesy($orig);
         if($w == null && $h == null)
@@ -175,6 +168,31 @@ class PicturesHandler
             imagecopyresized($ret, $orig, 0, 0, 0, 0, $ow*($h/$oh), $h, $ow, $oh);
             return $ret;
         }
+    }
+    
+    public function pictures_remove($pid)
+    {
+        $this->system->permissions_ignore();
+        try
+        {
+            $pic = $this->pictures_getByID($pid);
+        }
+        catch(Exception $e)
+        {
+            $this->system->permissions_ignore(false);
+            $this->system->permissions_require("admin.picture.delete");
+            throw $e;
+        }
+        $this->system->permissions_ignore(false);
+        $user = $this->system->current_user();
+        
+        if($user == null || $user["id"] != $pic["uid"])
+            $this->system->permissions_require("admin.picture.delete");
+        
+        $rs = $this->db->prepare('DELETE FROM '.$this->prfx.'pictures WHERE pid=?');
+        $rs->execute(array($pid));
+        if(file_exists($this->path.$pic["owner"].'/'.$pic["file"]))
+            unlink($this->path.$pic["owner"].'/'.$pic["file"]);
     }
     
     public function __construct($system)
