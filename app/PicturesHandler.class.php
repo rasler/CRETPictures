@@ -16,6 +16,36 @@ class PicturesHandler
         $this->system->permissions_require("application.picture.upload");
         mkdir($this->path.$this->usr_login."/".$fullName);
     }
+    
+    public function folders_remove($fullName)
+    {
+        $user = $this->system->current_user();
+        if($user == null)
+            return new Exception ("Unkown User");
+        if(is_dir($this->path.$this->usr_login."/".$fullName))
+        {
+            $rs = $this->db->prepare('DELETE FROM '.$this->prfx.'pictures WHERE uid=? AND file LIKE ?');
+            $rs->execute(array($user['id'], $fullName."/%"));
+            $this->recursiveRemove($this->path.$this->usr_login."/".$fullName);
+        }
+        else
+            throw new Exception("Folder Not Found", 404);
+    }
+    private function recursiveRemove($path)
+    {
+        if($dossier = opendir($path))
+        {
+            while(false !== ($fichier = readdir($dossier)))
+            {
+                if(is_dir($path.'/'.$fichier)&&$fichier!="."&&$fichier!="..")
+                    $this->recursiveRemove($path.'/'.$fichier);
+                elseif(is_file($path.'/'.$fichier))
+                    unlink($path.'/'.$fichier);
+            }
+            closedir($dossier);
+            rmdir($path);
+        }
+    }
        
     public function pictures_upload($fullName, $tmpFile)
     {
