@@ -9,6 +9,7 @@ class System
     private $prfx;
     private $perms;
     private $user;
+    private $ignorePermission = false;
     
     /* Users  */  
     public function user_create($login, $password)
@@ -124,7 +125,7 @@ class System
     }
     public function permissions_require($perm)
     {
-        if(!$this->permissions_test($perm))
+        if(!$this->permissions_test($perm)&&!$this->ignorePermission)
             throw new PermissonException ($perm);
     }
     public function permissions_grant($user_id, $perm)
@@ -146,6 +147,13 @@ class System
         
         $rs = $this->db->prepare('DELETE FROM '.$this->prfx.'permissions WHERE uid=? AND perm=? LIMIT 1');
         $rs->execute(array($user_id, $perm));
+    }
+    // Used to ignore permissions requirements (usefull when a function need the result of another one to produce an action)
+    // Warning : do not publish any of the information obtained by this way
+    public function permissions_ignore($ignore=true)
+    {
+        if(is_bool($ignore))
+            $this->ignorePermission = $ignore;
     }
 
 
