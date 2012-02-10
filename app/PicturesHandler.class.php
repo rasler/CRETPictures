@@ -13,6 +13,9 @@ class PicturesHandler
     
     public function folders_create($fullName)
     {
+        $user = $this->system->current_user();
+        if($user == null)
+            return new Exception ("Unkown User");
         $this->system->permissions_require("application.picture.upload");
         mkdir($this->path.$this->usr_login."/".$fullName);
     }
@@ -44,6 +47,28 @@ class PicturesHandler
             }
             closedir($dossier);
             rmdir($path);
+        }
+    }
+    
+    public function folders_rename($fullName, $newName)
+    {
+        $user = $this->system->current_user();
+        if($user == null)
+            return new Exception ("Unkown User");
+        $this->system->permissions_require("application.picture.upload");
+        if(is_dir($this->path.$this->usr_login."/".$fullName)&&is_dir(dirname($this->path.$this->usr_login."/".$newName))&&dirname($this->path.$this->usr_login."/".$newName)!=$this->path.$this->usr_login."/".$fullName&&!is_dir($this->path.$this->usr_login."/".$newName))
+        {
+            $this->db->beginTransaction();
+            $rs = $this->db->prepare('SELECT pid, file FROM '.$this->prfx.'pictures WHERE file LIKE ?');
+            $rs->execute(array($fullName."/%"));
+            $rs2 = $this->db->prepare('UPDATE '.$this->prfx.'pictures SET file=? WHERE pid = ?');
+            while($pic = $rs->fetch(PDO::FETCH_NAMED))
+            {
+                $rs2->execute(array(substr_replace($pic["file"], $newName, 0, strlen($fullName)), $pic["pid"]));
+            }
+            if(!$this->db->commit())
+                throw new Exception("Erreur de modification en base de données");
+            rename($this->path.$this->usr_login."/".$fullName, $this->path.$this->usr_login."/".$newName);
         }
     }
        
