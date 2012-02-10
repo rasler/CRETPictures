@@ -1,6 +1,6 @@
 <?php
 /**
- * Page d'ajouter un user
+ * Page d'ajout d'un user
  *
  * @author Estelle
  */
