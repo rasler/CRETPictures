@@ -4,6 +4,7 @@
  * Page d'accueil pour utilisateur non connecté OU connecté
  *
  * @author Madeleine
+ * @modifier Estelle
  */
     require 'smarty/setup.php';
     $smarty = new Smarty_CRETPictures();
