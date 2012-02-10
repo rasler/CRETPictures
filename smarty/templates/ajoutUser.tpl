@@ -1,4 +1,4 @@
-{* Template pour page d'ajout d'utilisateur *}
+{* Template pour page d'ajout d'user *}
 
 {extends file="structure.tpl"}
 
