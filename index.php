@@ -5,7 +5,7 @@
  *
  * @author Madeleine
  */
-    require('smarty/setup.php');
+    require 'smarty/setup.php';
     $smarty = new Smarty_CRETPictures();
     
     require_once 'app/System.class.php';
@@ -14,7 +14,7 @@
     //si l'utilisateur n'est pas connecté
     if($sys->current_user() == null)
         $smarty->display('index.tpl');
-    
+        
     //si l'utilisateur est connecté
     else{
         require_once 'app/PicturesHandler.class.php';
