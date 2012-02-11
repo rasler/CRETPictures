@@ -76,7 +76,7 @@
         {
             $permis="application.picture.upload";
             $sys->permissions_grant($id, $permis);
-        }       
+        }
     }
     
 ?>
