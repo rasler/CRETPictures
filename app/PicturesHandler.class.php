@@ -86,6 +86,52 @@ class PicturesHandler
         return $pid;
     }
     
+    public function pictures_update($picture)
+    {
+        if(!isset($picture["pid"]))
+            throw new Exception("Picture Not Found", 404);
+        $origin = $this->pictures_getByID($picture["pid"]);
+        if($origin["owner"] != $this->usr_login)
+            throw new Exception ("You cannot update a picture which does not belong to you");
+        $this->db->beginTransaction();
+        
+        // mise à jour du flag public
+        if(isset($picture["public"]))
+        {
+            $rs = $this->db->prepare('UPDATE '.$this->prfx.'pictures SET public=? WHERE pid=?');
+            $rs->execute(array($picture["public"], $origin["pid"]));
+        }
+        
+        // mise à jour du titre
+        if(isset($picture["title"]))
+        {
+            $rs = $this->db->prepare('UPDATE '.$this->prfx.'pictures SET title=? WHERE pid=?');
+            $rs->execute(array($picture["title"], $origin["pid"]));
+        }
+        
+        // mise à jour de la date de création
+        if(isset($picture["creation"]))
+        {
+            $rs = $this->db->prepare('UPDATE '.$this->prfx.'pictures SET creation=? WHERE pid=?');
+            $rs->execute(array($picture["creation"], $origin["pid"]));
+        }
+        
+        // mise à jour du chemin
+        if(isset($picture["file"]))
+        {
+            $rs = $this->db->prepare('UPDATE '.$this->prfx.'pictures SET public=? WHERE pid=?');
+            $rs->execute(array($picture["file"], $origin["pid"]));
+            
+            if($this->db->commit())
+            {
+                if(is_dir(dirname($this->path.$this->usr_login."/".$picture["file"])))
+                    mkdir(dirname($this->path.$this->usr_login."/".$picture["file"]));
+                rename($this->path.$this->usr_login."/".$origin["file"], $this->path.$this->usr_login."/".$picture["file"]);
+            }
+        }
+            
+    }
+    
     public function pictures_getFolderByUserID($uid)
     {
         $login = null;
