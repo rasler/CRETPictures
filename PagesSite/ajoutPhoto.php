@@ -31,10 +31,10 @@
 
         if(isset($_POST['titlePic']) && $_POST['titlePic'] != ""){
             $extension = strrchr($_POST['titlePic'],".");
-            if($extension == FALSE){
-                echo 'extension = '.$extension;
-                $POST['titlePic'] = $_POST['titlePic'].'.jpg';
-                echo 'nom fichier = '.$POST['titlePic'];
+            if($extension == FALSE || 
+                    ($extension != 'jpg' && $extension != 'png' && $extension != 'gif' && $extension != 'bmp')){
+                $extensionInit = strrchr($_FILES['photoFile']['name'],".");
+                $POST['titlePic'] = $_POST['titlePic'].$extensionInit;
                 $phandler->pictures_upload($POST['titlePic'], $photo);
             }
             else

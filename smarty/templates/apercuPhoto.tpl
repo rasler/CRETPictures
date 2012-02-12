@@ -6,7 +6,7 @@
 
 {block name=styles}<link rel="stylesheet" type="text/css" href="CSSFiles/structure.css"/>{/block}
 
-{block name=img}<img src="images/logo_cret.png" alt="logo" title="logo" width="125px" />{/block}
+{block name=img}<img src="../images/logo_cret.png" alt="logo" title="logo" width="125px" />{/block}
 
 {block name=encartConnexion}
     <br/><br/>
@@ -46,13 +46,8 @@
 {block name=body}
     {if $perms[6] == true}
     <table>
-        {foreach from=$tabPics item=photo}
-            <td>
-                <a href="PagesSite/apercuPhoto.php?img={$photo}"><img src="app/picture/{$photo}/thumb/255x255"/></a><br/>
-                <img src="images/modif.gif" width="20px" onClick=""/>
-                <img src="images/supp.gif" width="20px" onClick="confirm('Etes-vous sûr de vouloir supprimer ce fichier?')"/>
-            </td>
-        {/foreach}
+        <tr><img src="../app/picture/{$imageID}/resize/800x"/>{$imageID}<br/><tr/>
+        
     </table>
     {/if}
 {/block}
