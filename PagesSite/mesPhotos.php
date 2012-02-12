@@ -33,7 +33,7 @@
     if(isset($_GET['saisie']))
         $phandler->folders_create($_GET['saisie']);
     
-    $pics;
+    $pics = array();
     for($i = 0; $i < count($photos); $i++){
         if($photos[$i]['type'] == 'picture')
             $pics[$i] = $photos[$i]['pid'];

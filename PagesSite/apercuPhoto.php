@@ -25,7 +25,7 @@
     if(isset($_GET['img'])){
         //récupérer l'image avec l'ID
         $image = $phandler->pictures_getByID($_GET['img']);
-        var_dump($_GET['img']);
+        $smarty->assign('image', $image);
         $smarty->assign('imageID', $_GET['img']);
         $smarty->display('apercuPhoto.tpl');
     }
