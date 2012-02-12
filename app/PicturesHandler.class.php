@@ -119,12 +119,12 @@ class PicturesHandler
         // mise à jour du chemin
         if(isset($picture["file"]))
         {
-            $rs = $this->db->prepare('UPDATE '.$this->prfx.'pictures SET public=? WHERE pid=?');
+            $rs = $this->db->prepare('UPDATE '.$this->prfx.'pictures SET file=? WHERE pid=?');
             $rs->execute(array($picture["file"], $origin["pid"]));
             
             if($this->db->commit())
             {
-                if(is_dir(dirname($this->path.$this->usr_login."/".$picture["file"])))
+                if(!is_dir(dirname($this->path.$this->usr_login."/".$picture["file"])))
                     mkdir(dirname($this->path.$this->usr_login."/".$picture["file"]));
                 rename($this->path.$this->usr_login."/".$origin["file"], $this->path.$this->usr_login."/".$picture["file"]);
             }
