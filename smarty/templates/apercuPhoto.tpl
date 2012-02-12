@@ -47,7 +47,7 @@
     {if $perms[6] == true}
     <table>
         <tr><img src="../app/picture/{$imageID}/resize/800x"/>{$imageID}<br/><tr/>
-        
+        {if $image.public == 1}
     </table>
     {/if}
 {/block}
