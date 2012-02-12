@@ -40,7 +40,7 @@
         
         $smarty->assignByRef('picHandler',$phandler);
     
-        $pics;
+        $pics = array();
         for($i = 0; $i < count($photos); $i++){
             if($photos[$i]['type'] == 'picture')
                 $pics[$i] = $photos[$i]['pid'];
