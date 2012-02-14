@@ -20,15 +20,34 @@
     $perms[6] = $sys->permissions_test('admin.picture.read');
     $perms[7] = $sys->permissions_test('application.picture.upload');
     
+    $Login = $_GET['Login'];
+    $smarty->assign('Login', $Login);
+    
+    $user = $sys->user_getByLogin($Login);
+    $smarty->assign('user', $user);
+    
+    $users = $sys->user_getAll();
+    $smarty->assign('users', $users);
+    
     $smarty->assign('perms', $perms);
-    $smarty->display('ajoutUser.tpl');
+    $smarty->display('UserUpdate2.tpl');
     
     if(isset($_GET['do']) && $_GET['do'] == 'ajout')
     {
-        $Login = $_POST['Login'];
-        $Pass = $_POST['Pass'];
         
-        $id = $sys->user_create($Login, $Pass);
+        $user = $sys->user_getByLogin($Login);
+        
+        $id = $user['id'];
+        
+        $sys->permissions_revoke($id , "admin.permission.grant" );
+        $sys->permissions_revoke($id , "admin.permission.revoke" );
+        $sys->permissions_revoke($id , "admin.picture.read" );
+        $sys->permissions_revoke($id , "admin.user.create" );
+        $sys->permissions_revoke($id , "admin.user.read" );
+        $sys->permissions_revoke($id , "admin.user.update" );
+        $sys->permissions_revoke($id , "admin.user.delete" );
+        $sys->permissions_revoke($id , "application.login" );
+        $sys->permissions_revoke($id , "application.picture.upload" );
         
         if(isset($_POST['AdminGrant']) && $_POST['AdminGrant'] == 'on')
         {
@@ -75,9 +94,6 @@
             $permis="application.picture.upload";
             $sys->permissions_grant($id, $permis);
         }
-        
-        header('Location: UserAjoute.php?id={$id]');
-        
     }
     
 ?>

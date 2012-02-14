@@ -43,17 +43,40 @@
 {/block}
 
 {block name=body}
+            
+    <span color="#fff">Liste des utilisateurs existants : </span></br>
+
+    {foreach key=K item=ind from=$users}
+        <tr>
+            <td><a href="UserUpdate2.php?Login={$ind.login}">{$ind.login}  </a></td>
+            {if $perms[3] == true} <td><a href="supprUser.php?Login={$ind.login}"><img src="../images/im_suppr.png" alt="logo" title="logo" width="12px" /></a></td>{/if}</br>
+        </tr>
+    {/foreach}
+    </br> </br> 
+            
+
 <form method="POST" name="formulaire" enctype="multipart/form-data" 
-        action="ajoutUser.php?do=ajout" onsubmit="return validerForm(this)">
+        action="UserUpdate2.php?do=ajout" onsubmit="return validerForm(this)">
         <div class="infosCreaUser">
             
-            <span color="#fff">Création d'un nouvel utilisateur</span></br></br>
+            <span color="#fff">Modification d'un utilisateur existant </span></br></br>
             
-            <span color="#fff">Login du nouveau user : </span>
-            <input type="text" name="Login" value=""/><br/>
+            <span color="#fff">Login de l'utilisateur à modifier : {$Login} </span></br></br>
+            <span color="#fff">Information de cet utilisateur : </span></br>
+
+            <tr>ID : {$user.id}</br></tr>
+            <tr>Login : {$user.login}</br></tr>
+            <tr>Date de création : {$user.creation}</br></tr>
+            <tr>Dernière connection : {$user.lastConnection}</br></tr></br>
+
+            {foreach key=K item=ind from=$user.permissions}
+                <tr>{$ind}</br></tr>
+            {/foreach}
             
-            <span color="#fff">Mot de passe du user : </span>
-            <input type="password" name="Pass" value=""/><br/><br/>
+            </br> </br>
+            
+            {if $perms[2] == true}
+            <span color="#fff">Séléctionner les droits que vous voulez ajouter, tous les autres seront supprimés: </span></br></br>
             
             <span color="#fff">Ajouter des droits d'administrateur : </span></br>
             <input type="checkbox" name="AdminGrant" id="AdminGrant" /> <label for="AdminGrant">Autoriser l'ajout de permissions à d'autres utilisateurs</label></br>
@@ -72,8 +95,7 @@
             
             </br><input type="submit" value="Valider" />
         </div>
+        {/if}
     </form>
 
-    {if $perms[0] == true}{/if}
-        
 {/block}

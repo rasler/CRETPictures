@@ -43,6 +43,10 @@
 {/block}
 
 {block name=body}
+
+<span color="#fff">Un nouvel utilisateur à correctement été créé </span></br></br>
+
+            
 <form method="POST" name="formulaire" enctype="multipart/form-data" 
         action="ajoutUser.php?do=ajout" onsubmit="return validerForm(this)">
         <div class="infosCreaUser">
@@ -54,8 +58,7 @@
             
             <span color="#fff">Mot de passe du user : </span>
             <input type="password" name="Pass" value=""/><br/><br/>
-            
-            <span color="#fff">Ajouter des droits d'administrateur : </span></br>
+                        <span color="#fff">Ajouter des droits d'administrateur : </span></br>
             <input type="checkbox" name="AdminGrant" id="AdminGrant" /> <label for="AdminGrant">Autoriser l'ajout de permissions à d'autres utilisateurs</label></br>
             <input type="checkbox" name="AdminRevoke" id="AdminRevoke" /> <label for="AdminRevoke">Autoriser la suppression de permissions à d'autres utilisateurs</label></br>
             
@@ -74,6 +77,6 @@
         </div>
     </form>
 
-    {if $perms[0] == true}{/if}
-        
+    
+
 {/block}

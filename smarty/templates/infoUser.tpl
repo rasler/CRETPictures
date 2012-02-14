@@ -1,8 +1,8 @@
-{* Template pour page d'ajout d'user *}
+{* Template pour page la lecture des users *}
 
 {extends file="structure.tpl"}
 
-{block name=title}eBime - Ajout User(s){/block}
+{block name=title}eBime - lecture User(s){/block}
 
 {block name=styles}<link rel="stylesheet" type="text/css" href="CSSFiles/structure.css"/>{/block}
 
@@ -25,7 +25,7 @@
     <h2>Administration</h2>
     <ul>
         {if $perms[0] == true}<li><a href="ajoutUser.php">Ajout user(s)</a></li>{/if}
-        {if $perms[2] == true}<li><a href="PagesSite/UserUpdate.php">Mise à jour user(s)</a></li>{/if}
+        {if $perms[2] == true}<li><a href="UserUpdate.php">Mise à jour user(s)</a></li>{/if}
     </ul>
     {/if}
 
@@ -43,6 +43,25 @@
 {/block}
 
 {block name=body}
-<span color="#fff">Etes-vous sur de vouloir supprimer l'utilisateur : {$Login} ?</span></br>
-<a href="supprUser2.php?Login={$Login}">Oui </a><br/> <a href="UserUpdate.php">Non </a><br/><br/>                
+
+<span color="#fff">Information de cet utilisateur : </span></br>
+
+    <tr>ID : {$user.id}</br></tr>
+    <tr>Login : {$user.login}</br></tr>
+    <tr>Date de création : {$user.creation}</br></tr>
+    <tr>Dernière connection : {$user.lastConnection}</br></tr></br>
+    
+    {foreach key=K item=ind from=$user.permissions}
+        <tr>{$ind}</br></tr>
+    {/foreach}
+    
+</br>
+<span color="#fff">Liste des utilisateurs existants : </span></br>
+
+{foreach key=K item=ind from=$users}
+    <tr>
+        <td><a href="infoUser.php?Login={$ind.login}">{$ind.login}</td></a></br>
+    </tr>
+{/foreach}
+</br>
 {/block}

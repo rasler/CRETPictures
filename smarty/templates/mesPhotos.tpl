@@ -24,10 +24,8 @@
     {if $perms[0] == true || $perms[1] == true || $perms[2] == true || $perms[3] == true}
     <h2>Administration</h2>
     <ul>
-        {if $perms[0] == true}<li><a href="#">Ajout user(s)</a></li>{/if}
-        {if $perms[1] == true}<li><a href="#">Compte user(s)</a></li>{/if}
-        {if $perms[2] == true}<li><a href="#">Mise à jour user(s)</a></li>{/if}
-        {if $perms[3] == true}<li><a href="#">Suppression user(s)</a></li>{/if}
+        {if $perms[0] == true}<li><a href="ajoutUser.php">Ajout user(s)</a></li>{/if}
+        {if $perms[2] == true}<li><a href="UserUpdate.php">Mise à jour user(s)</a></li>{/if}
     </ul>
     {/if}
 

@@ -20,20 +20,9 @@
     $perms[6] = $sys->permissions_test('admin.picture.read');
     $perms[7] = $sys->permissions_test('application.picture.upload');
     
-    $Login = $_GET['Login'];
-    $smarty->assign('Login', $Login);
     $smarty->assign('perms', $perms);
-    $smarty->display('supprUser.tpl');
+    $smarty->assign('id', $id);
+    $smarty->display('UserAjoute.tpl');
     
-    if(isset($_GET['do']) && $_GET['do'] == 'ajout')
-    {
-        $Login = $_POST['Login'];
-        
-        $user = $sys->user_getByLogin($Login);
-        
-        $sys->user_delete($user);
-        
-        echo ("Utilisateur " . $Login . " supprimé.");
-    }
     
 ?>
