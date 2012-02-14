@@ -37,11 +37,44 @@
 
     <h2>Gestion de photos</h2>
     <ul>
-        <li><a href="PagesSite/mesPhotos.php">Mes photos</a></li>
-        {if $perms[7] == true}<li><a href="ajoutPhoto.php">Ajout de photos</a></li>{/if}
+        <li><a href="#">Mes photos</a></li>
     </ul>
 {/block}
 
 {block name=body}
+<script>
+    function promptMessage(){
+        var saisie = prompt("Nom du dossier", "");
+        if(saisie)  window.location.replace("mesPhotos.php?saisie="+saisie);
+    }
+</script>
+
+    <table>
+        <td><input type="button" value="Nouveau dossier" name="nameFolder" onClick="promptMessage();"/>
+        </td><form method="post" action="mesPhotos.php?action=new">
+        {if $perms[7] == true}<td><input type="button" value="Ajouter photos" onClick="uploadPics();"></input></td>{/if}
+    </table>
+
+<div class=bigBlock>
+<table>
+{section name=content loop=$tabPhotos}
+    {if $tabPhotos[content].type == "folder"}
+        <td>
+            <img src="../images/folder.png" width="255" onClick=""/><br/>
+            <img src="../images/modif.gif" width="20px" onClick=""/>
+            <img src="../images/supp.gif" width="20px" onClick="confirm('Etes-vous sûr de vouloir supprimer ce fichier?')"/>
+        </td>
+    {elseif $tabPhotos[content].type == "picture"}
+        <td>
+            <a href="apercuPhoto.php?img={$tabPics[content]}">
+                <img src="../app/picture/{$tabPics[content]}/thumb/255x255"/>
+            </a><br/>
+            <img src="../images/modif.gif" width="20px" onClick=""/>
+            <img src="../images/supp.gif" width="20px" onClick="confirm('Etes-vous sûr de vouloir supprimer ce fichier?')"/>
+        </td>
+    {/if}
+{/section}
+</table>
+</div>
 
 {/block}

@@ -6,7 +6,7 @@
 
 {block name=styles}<link rel="stylesheet" type="text/css" href="CSSFiles/structure.css"/>{/block}
 
-{block name=img}<img src="images/logo_cret.png" alt="logo" title="logo" width="125px" />{/block}
+{block name=img}<img src="../images/logo_cret.png" alt="logo" title="logo" width="125px" />{/block}
 
 {block name=encartConnexion}
     <br/><br/>
@@ -25,7 +25,9 @@
     <h2>Administration</h2>
     <ul>
         {if $perms[0] == true}<li><a href="PagesSite/ajoutUser.php">Ajout user(s)</a></li>{/if}
-        {if $perms[2] == true}<li><a href="PagesSite/UserUpdate.php">Mise à jour user(s)</a></li>{/if}
+        {if $perms[1] == true}<li><a href="#">Comptes user(s)</a></li>{/if}
+        {if $perms[2] == true}<li><a href="PagesSite/updateUser.php">Mise à jour user(s)</a></li>{/if}
+        {if $perms[3] == true}<li><a href="PagesSite/supprUser.php">Suppression user(s)</a></li>{/if}
     </ul>
     {/if}
 
@@ -38,14 +40,14 @@
     <h2>Gestion de photos</h2>
     <ul>
         <li><a href="PagesSite/mesPhotos.php">Mes photos</a></li>
-        {if $perms[7] == true}<li><a href="PagesSite/ajoutPhoto.php">Ajout de photos</a></li>{/if}
     </ul>
 {/block}
 
 {block name=body}
-<table>
-{if $perms[6] == true}
-    <h2>Photos en vrac</h2>
-{/if}
-</table>
+    {if $perms[6] == true}
+    <table>
+        <tr><img src="../app/picture/{$imageID}/resize/800x"/>{$imageID}<br/><tr/>
+        {if $image.public == 1}
+    </table>
+    {/if}
 {/block}

@@ -176,6 +176,7 @@ class System
             $this->logout();
             throw $e;
         }
+        $this->db->exec('UPDATE '.$this->prfx.'users SET lastConnection=NOW() WHERE uid='.$me["id"]);
     }
     public function logout($removeCookie=true)
     {

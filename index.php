@@ -37,6 +37,16 @@
 
         $smarty->assign('perms', $perms);
         $smarty->assign('tabPhotos', $photos);
+        
+        $smarty->assignByRef('picHandler',$phandler);
+    
+        $pics = array();
+        for($i = 0; $i < count($photos); $i++){
+            if($photos[$i]['type'] == 'picture')
+                $pics[$i] = $photos[$i]['pid'];
+        }
+        
+        $smarty->assign('tabPics',$pics);
         $smarty->display('indexConnecte.tpl');
     }
 ?>
