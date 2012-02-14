@@ -35,6 +35,8 @@
     if(isset($_GET['do']) && $_GET['do'] == 'ajout')
     {
         
+        $Login = $_POST['Login2'];
+        
         $user = $sys->user_getByLogin($Login);
         
         $id = $user['id'];

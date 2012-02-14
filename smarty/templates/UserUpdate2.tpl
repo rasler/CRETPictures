@@ -49,14 +49,14 @@
     {foreach key=K item=ind from=$users}
         <tr>
             <td><a href="UserUpdate2.php?Login={$ind.login}">{$ind.login}  </a></td>
-            {if $perms[3] == true} <td><a href="supprUser.php?Login={$ind.login}"><img src="../images/im_suppr.png" alt="logo" title="logo" width="12px" /></a></td>{/if}</br>
+            {if $perms[3] == true} <td><a href="supprUser.php?Login={$ind.login}"><img src="../images/supp.gif" alt="logo" title="logo" width="12px" /></a></td>{/if}</br>
         </tr>
     {/foreach}
     </br> </br> 
             
 
 <form method="POST" name="formulaire" enctype="multipart/form-data" 
-        action="UserUpdate2.php?do=ajout" onsubmit="return validerForm(this)">
+        action="UserUpdate3.php?do=ajout" onsubmit="return validerForm(this)">
         <div class="infosCreaUser">
             
             <span color="#fff">Modification d'un utilisateur existant </span></br></br>
@@ -79,6 +79,9 @@
             <span color="#fff">Séléctionner les droits que vous voulez ajouter, tous les autres seront supprimés: </span></br></br>
             
             <span color="#fff">Ajouter des droits d'administrateur : </span></br>
+            
+            <input type="hidden" name="Login2" value={$user.login} />
+            
             <input type="checkbox" name="AdminGrant" id="AdminGrant" /> <label for="AdminGrant">Autoriser l'ajout de permissions à d'autres utilisateurs</label></br>
             <input type="checkbox" name="AdminRevoke" id="AdminRevoke" /> <label for="AdminRevoke">Autoriser la suppression de permissions à d'autres utilisateurs</label></br>
             
