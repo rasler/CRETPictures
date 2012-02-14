@@ -20,20 +20,9 @@
     $perms[6] = $sys->permissions_test('admin.picture.read');
     $perms[7] = $sys->permissions_test('application.picture.upload');
     
-    $Login = $_GET['Login'];
-    $smarty->assign('Login', $Login);
-    
-    $user = $sys->user_getByLogin($Login);
-    $smarty->assign('user', $user);
-    
-    $users = $sys->user_getAll();
-    $smarty->assign('users', $users);
-    
-    $smarty->assign('perms', $perms);
-    $smarty->display('UserUpdate3.tpl');
-    
     if(isset($_GET['do']) && $_GET['do'] == 'ajout')
     {
+        $Login = $_POST['Login2'];
         
         $user = $sys->user_getByLogin($Login);
         
@@ -94,6 +83,12 @@
             $permis="application.picture.upload";
             $sys->permissions_grant($id, $permis);
         }
-    }
+    $users = $sys->user_getAll();
+    $smarty->assign('users', $users);
     
+    $smarty->assign('Login', $Login);
+    $smarty->assign('user', $user);
+    $smarty->assign('perms', $perms);
+    $smarty->display('UserUpdate3.tpl');
+    }
 ?>
