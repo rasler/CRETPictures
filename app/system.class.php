@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__).'/LocalSettings.php';
 require_once dirname(__FILE__).'/lib/PermissionException.class.php';
+require_once dirname(__FILE__).'/ProfilesHandler.class.php';
 
 class System
 {
@@ -12,7 +13,7 @@ class System
     private $ignorePermission = false;
     
     /* Users  */  
-    public function user_create($login, $password)
+    public function user_create($login, $password, $profile=null)
     {
         global $default_permissions;
         if(!is_string($login)||!is_string($password)||!ctype_alnum($login))
@@ -24,6 +25,18 @@ class System
         $id = $this->db->lastInsertId();
         foreach($default_permissions as $perm)
             $this->db->exec('INSERT INTO '.$this->prfx.'permissions VALUES ('.$id.', \''.$perm.'\');');
+        
+        // création du profil
+        $temp = $this->user;
+        $this->user = array('id' => $id);
+        if($profile == null)
+            $profile = array("link" => $id);
+        else 
+            $profile["link"] = $id;
+        $ph = new ProfilesHandler($this);
+        $ph->profiles_create($profile);
+        $this->user = $temp;
+        
         $this->db->commit();
         return $id;
     }
