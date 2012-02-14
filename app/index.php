@@ -2,6 +2,7 @@
 require 'Slim/Slim.php';
 require_once 'System.class.php';
 require_once 'PicturesHandler.class.php';
+require_once 'ProfilesHandler.class.php';
 
 $system = new System();
 $pictures = new PicturesHandler($system);
@@ -114,6 +115,12 @@ $app->delete('/session' , function () {
 $app->get('/session/user' , function () {
     global $system;
     echo json_encode($system->current_user());
+});
+
+$app->get('/session/profile' , function () {
+    global $system;
+    $ph = new ProfilesHandler($system);
+    echo json_encode($ph->profiles_getMine());
 });
 
 $app->get('/session/folder' , function () {
