@@ -26,6 +26,30 @@ CREATE TABLE IF NOT EXISTS `cret_permissions` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `cret_profiles`
+--
+
+CREATE TABLE IF NOT EXISTS `cret_profiles` (
+  `prid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `owner` int(10) unsigned NOT NULL,
+  `gender` enum('male','female') COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nickName` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `firstName` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `lastName` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `birth` date DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `phone` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `link` int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (`prid`),
+  UNIQUE KEY `owner` (`owner`,`email`),
+  UNIQUE KEY `owner_2` (`owner`,`link`),
+  KEY `link` (`link`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `cret_pictures`
 --
 
@@ -68,6 +92,13 @@ CREATE TABLE IF NOT EXISTS `cret_users` (
 --
 ALTER TABLE `cret_permissions`
   ADD CONSTRAINT `cret_permissions_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `cret_users` (`uid`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `cret_profiles`
+--
+ALTER TABLE `cret_profiles`
+  ADD CONSTRAINT `cret_profiles_ibfk_1` FOREIGN KEY (`owner`) REFERENCES `cret_users` (`uid`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  ADD CONSTRAINT `cret_profiles_ibfk_2` FOREIGN KEY (`link`) REFERENCES `cret_users` (`uid`) ON DELETE SET NULL ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `cret_pictures`
