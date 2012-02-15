@@ -295,7 +295,7 @@ class PicturesHandler
         if(file_exists($this->path.$pic["owner"].'/'.$pic["file"]))
             unlink($this->path.$pic["owner"].'/'.$pic["file"]);
     }
-    
+        
     public function pictures_share($pid, $prid)
     {
         $pi = $this->pictures_getByID($pid);
@@ -317,7 +317,21 @@ class PicturesHandler
             throw new Exception("Only the owner of the picture can unshare it");
         
         $rs = $this->db->prepare('DELETE FROM '.$this->prfx.'shares WHERE pid =? AND prid = ?)');
-        $rs->execute(array($pid, $prid));
+        $rs->execute(array($pid, $prid));   
+    }
+    
+    // returns array of profiles
+    public function pictures_sharedWidth($pid)
+    {
+        $pi = $this->pictures_getByID($pid);
+        $user = $this->system->current_user();
+        
+        if($pi["owner"] != $user["id"])
+            throw new Exception("Only the owner of the picture can see shares");
+        
+        $rs = $this->db->prepare('SELECT p.* FROM '.$this->prfx.'profiles p JOIN '.$this->prfx.'shares s USING(prid) WHERE pid =?');
+        $rs->execute(array($pid));
+        return $rs->fetchAll(PDO::FETCH_NAMED);
     }
     
     public function __construct($system)
