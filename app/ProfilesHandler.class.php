@@ -118,7 +118,7 @@ class ProfilesHandler
     
     public function __construct($system)
     {
-        global $pi_data_path, $pi_db_prefix;
+        global $pi_db_prefix;
         $this->system = $system;
         $this->prfx = $pi_db_prefix;
         if(!$system instanceof System)
