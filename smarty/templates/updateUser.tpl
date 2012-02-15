@@ -10,6 +10,8 @@
 
 {block name=lien}<a href="../index.php">eBime Pictures - A new way of sharing your pics!</a>{/block}
 
+{* ___________________________________________ BLOCK ENCART CONNEXION ___________________________________________ *}
+
 {block name=encartConnexion}
     <br/><br/>
     <table>
@@ -22,14 +24,16 @@
     </table>
 {/block}
 
+{* _________________________________________________ BLOCK MENU _________________________________________________ *}
+
 {block name=menu}
+    <h2><a href="filtrePhotos.php">Filtre photo</a></h2>
+
     {if $perms[0] == true || $perms[1] == true || $perms[2] == true || $perms[3] == true}
     <h2>Administration</h2>
     <ul>
         {if $perms[0] == true}<li><a href="ajoutUser.php">Ajout user(s)</a></li>{/if}
-        {if $perms[1] == true}<li><a href="LectureUser.php">Comptes user(s)</a></li>{/if}
         {if $perms[2] == true}<li><a href="updateUser.php">Mise à jour user(s)</a></li>{/if}
-        {if $perms[3] == true}<li><a href="supprUser.php">Suppression user(s)</a></li>{/if}
     </ul>
     {/if}
 
@@ -39,12 +43,15 @@
         <li><a href="#">Profils partagés</a></li>
     </ul>
 
+    {if $perms[5] == true}
     <h2>Gestion de photos</h2>
     <ul>
-        <li><a href="PagesSite/mesPhotos.php">Mes photos</a></li>
-        {if $perms[7] == true}<li><a href="ajoutPhoto.php">Ajout de photos</a></li>{/if}
+        <li><a href="mesPhotos.php?currentFolder=">Mes photos</a></li>
     </ul>
+    {/if}
 {/block}
+
+{* _________________________________________________ BLOCK BODY _________________________________________________ *}
 
 {block name=body}
 <form method="POST" name="formulaire" enctype="multipart/form-data" 
