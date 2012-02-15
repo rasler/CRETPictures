@@ -88,6 +88,19 @@ CREATE TABLE IF NOT EXISTS `cret_pictures` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `cret_shares`
+--
+
+CREATE TABLE IF NOT EXISTS `cret_shares` (
+  `pid` int(10) unsigned NOT NULL,
+  `prid` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`pid`,`prid`),
+  KEY `prid` (`prid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `cret_users`
 --
 
@@ -132,3 +145,10 @@ ALTER TABLE `cret_profiles`
 --
 ALTER TABLE `cret_pictures`
   ADD CONSTRAINT `cret_pictures_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `cret_users` (`uid`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `cret_shares`
+--
+ALTER TABLE `cret_shares`
+  ADD CONSTRAINT `cret_shares_ibfk_2` FOREIGN KEY (`prid`) REFERENCES `cret_profiles` (`prid`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cret_shares_ibfk_1` FOREIGN KEY (`pid`) REFERENCES `cret_pictures` (`pid`) ON DELETE CASCADE;

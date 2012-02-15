@@ -296,6 +296,30 @@ class PicturesHandler
             unlink($this->path.$pic["owner"].'/'.$pic["file"]);
     }
     
+    public function pictures_share($pid, $prid)
+    {
+        $pi = $this->pictures_getByID($pid);
+        $user = $this->system->current_user();
+        
+        if($pi["owner"] != $user["id"])
+            throw new Exception("Only the owner of the picture can share it");
+        
+        $rs = $this->db->prepare('INSERT INTO '.$this->prfx.'shares VALUES (?, ?)');
+        $rs->execute(array($pid, $prid));
+    }
+    
+    public function pictures_unshare($pid, $prid)
+    {
+        $pi = $this->pictures_getByID($pid);
+        $user = $this->system->current_user();
+        
+        if($pi["owner"] != $user["id"])
+            throw new Exception("Only the owner of the picture can unshare it");
+        
+        $rs = $this->db->prepare('DELETE FROM '.$this->prfx.'shares WHERE pid =? AND prid = ?)');
+        $rs->execute(array($pid, $prid));
+    }
+    
     public function __construct($system)
     {
         global $pi_data_path, $pi_db_prefix;
