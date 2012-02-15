@@ -1,8 +1,8 @@
-{* Template pour page d'ajout d'user *}
+{* Template pour page d'accueil pour utilisateur connecté *}
 
 {extends file="structure.tpl"}
 
-{block name=title}eBime - Ajout User(s){/block}
+{block name=title}eBime - Accueil{/block}
 
 {block name=styles}<link rel="stylesheet" type="text/css" href="CSSFiles/structure.css"/>{/block}
 
@@ -13,15 +13,34 @@
 {* ___________________________________________ BLOCK ENCART CONNEXION ___________________________________________ *}
 
 {block name=encartConnexion}
+{if $name == ""}
+<form method="POST" action="connexion.php?do=login">
+    <table>
+        <tr>
+            <td>Login: </td>
+            <td><input type="text" name="nom" maxlength="14" onfocus="this.value=''"/></td>
+        </tr><br/>
+        <tr>
+            <td>Mot de passe: </td>
+            <td><input type="password" name="mot_passe"/></td>
+        </tr><br/>
+        <tr>
+            <td><input type="submit" value="Login"/></td>
+            <td><a href="#">S'inscrire</a></td>
+        </tr>
+    </table>
+</form>
+{else}
     <br/><br/>
     <table>
         <tr>
-            Bienvenu {$name|Default:""} sur votre compte!
+            Bienvenu(e) {$name|Default:""} sur votre compte!
         </tr><br/><br/>
         <tr>
             <a href="../connexion.php?do=logout">Se déconnecter</a>
         <tr/>
     </table>
+{/if}
 {/block}
 
 {* _________________________________________________ BLOCK MENU _________________________________________________ *}
@@ -33,7 +52,7 @@
     <h2>Administration</h2>
     <ul>
         {if $perms[0] == true}<li><a href="ajoutUser.php">Ajout user(s)</a></li>{/if}
-        {if $perms[2] == true}<li><a href="UserUpdate.php">Mise à jour user(s)</a></li>{/if}
+        {if $perms[2] == true}<li><a href="updateuser.php">Mise à jour user(s)</a></li>{/if}
     </ul>
     {/if}
 
@@ -54,6 +73,8 @@
 {* _________________________________________________ BLOCK BODY _________________________________________________ *}
 
 {block name=body}
-<span color="#fff">Etes-vous sur de vouloir supprimer l'utilisateur : {$Login} ?</span></br>
-<a href="supprUser2.php?Login={$Login}">Oui </a><br/> <a href="UserUpdate.php">Non </a><br/><br/>                
+    {if $perms[4] == true}
+    <table>
+    </table>
+    {/if}
 {/block}

@@ -47,6 +47,8 @@
 {* _________________________________________________ BLOCK MENU _________________________________________________ *}
 
 {block name=menu}
+    <h2><a href="filtrePhotos.php">Filtre photo</a></h2>
+
     {if $perms[0] == true || $perms[1] == true || $perms[2] == true || $perms[3] == true}
     <h2>Administration</h2>
     <ul>
@@ -74,7 +76,7 @@
         <td>
             <input type="button" value="Nouveau dossier" name="nameFolder" onClick="nouveauDossier('{$currentFolder}');"/>
         </td>
-        {if $perms[7] == true}
+        {if $perms[5] == true}
             <td><a href="ajoutPhoto.php?currentFolder={$currentFolder}">
                 <input type="button" value="Ajouter photos"/>
             </a></td>

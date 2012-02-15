@@ -21,16 +21,7 @@
                 </div>
             </div>
 
-            <div id="barre_menu">  
-                <h2>Tri des photos</h2>
-                <ul>
-                    <li><a href="#">par personne</li>
-                    <li><a href="#">par date</li>
-                    <li><a href="#">par taille</li>
-                </ul>
-                {block name=menu}{/block}
-                
-            </div>
+            <div id="barre_menu">{block name=menu}{/block}</div>
 
             <div id="corps">{block name=body}{/block}</div>
         </div>

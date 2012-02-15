@@ -16,7 +16,7 @@
 <br/><br/>
     <table>
         <tr>
-            <span font-size="16px">Bienvenu {$name="Utilisateur1"} sur votre compte!</span>
+            <span font-size="16px">Bienvenu {$name|Default:""} sur votre compte!</span>
         </tr><br/><br/>
         <tr>
             <a href="../connexion.php?do=logout">Se déconnecter</a>
@@ -27,6 +27,8 @@
 {* _________________________________________________ BLOCK MENU _________________________________________________ *}
 
 {block name=menu}
+    <h2><a href="filtrePhotos.php">Filtre photo</a></h2>
+
     {if $perms[0] == true || $perms[1] == true || $perms[2] == true || $perms[3] == true}
     <h2>Administration</h2>
     <ul>
@@ -41,10 +43,12 @@
         <li><a href="#">Profils partagés</a></li>
     </ul>
 
+    {if $perms[5] == true}
     <h2>Gestion de photos</h2>
     <ul>
         <li><a href="mesPhotos.php?currentFolder=">Mes photos</a></li>
     </ul>
+    {/if}
 {/block}
 
 {* _________________________________________________ BLOCK BODY _________________________________________________ *}
