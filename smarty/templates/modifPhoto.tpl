@@ -1,8 +1,8 @@
-{* Template pour page d'ajout de photos *}
+{* Template pour page de modification d'une photo *}
 
 {extends file="structure.tpl"}
 
-{block name=title}eBime - Ajout de photo{/block}
+{block name=title}eBime - Modification{/block}
 
 {block name=styles}<link rel="stylesheet" type="text/css" href="CSSFiles/structure.css"/>{/block}
 
@@ -13,13 +13,13 @@
 {* ___________________________________________ BLOCK ENCART CONNEXION ___________________________________________ *}
 
 {block name=encartConnexion}
-<br/><br/>
+    <br/><br/>
     <table>
         <tr>
-            <span font-size="16px">Bienvenu {$name="Utilisateur1"} sur votre compte!</span>
+            Bienvenu {$name|Default:""} sur votre compte!
         </tr><br/><br/>
         <tr>
-            <a href="../connexion.php?do=logout">Se déconnecter</a>
+            <a href="connexion.php?do=logout">Se déconnecter</a>
         <tr/>
     </table>
 {/block}
@@ -46,6 +46,7 @@
         <li><a href="mesPhotos.php?currentFolder=">Mes photos</a></li>
     </ul>
 {/block}
+
 
 {* _________________________________________________ BLOCK BODY _________________________________________________ *}
 
@@ -286,7 +287,6 @@
             m2 = m2.substr(m2.length - 2);
             d2 = '00' + d;
             d2 = d2.substr(d2.length - 2);
-
             return d2 + '/' + m2 + '/' + y;
         }
 
@@ -294,8 +294,8 @@
         function dateChosen(d, m, y) {
             calendarClose();
 
-            if (typeof(element.value) != 'undefined') {    element.value = formaterDate(d, m, y);	}
-            else if (typeof(element.innerHTML) != 'undefined') {    element.innerHTML = formaterDate(d, m, y);  }
+            if (typeof(element.value) != 'undefined') {	element.value = formaterDate(d, m, y);	}
+            else if (typeof(element.innerHTML) != 'undefined') {    element.innerHTML = formaterDate(d, m, y);	}
             else {	alert (formaterDate(d, m, y));	}
         }
     </script>
@@ -312,24 +312,32 @@
 
 {* ################################################  FORMULAIRE  ################################################ *}
 
-    <form method="POST" name="formulaire" enctype="multipart/form-data" 
-        action="../PagesSite/ajoutPhoto.php?do=ajout&currentFolder={$currentFolder}" onsubmit="return validerForm(this)">
-            <input type="file" name="photoFile" value=""/><br/>
-            
-            <span color="#fff">Titre de la photo (facultatif): </span>
-            <input type="text" name="titlePic"/><br/>
-            
-            Date de la prise de la photo : 
-            <input onclick="calendarShow(this);" name="date" style="cursor: text" /><br />
-            
-            Personnes apparaissant sur la photo : <br/>
-            <textarea name="listPersonnes" rows="5" cols="50"></textarea><br/>
-
-            <input type="submit" value="Valider" />
-    </form>
-
-    <a href="mesPhotos.php?currentFolder={$currentFolder}">
-        <input type="button" value="Revenir au dossier de photos"/>
-    </a>
-
+    {if $perms[6] == true}
+        <center><img src="../app/picture/{$imageID}/resize/800x"/></center>
+        <br/><br/>
+        <form method="POST" name="formulaire" action="apercuPhoto.php?do=validate&modif={$image}&img={$imageID}">
+            <table>
+                <tr>
+                    <td>Titre photo: </td>
+                    <td><input type="text" name="title" value="{$image.title}"></input></td>
+                </tr>
+                <tr>
+                    <td>Date de création:</td>
+                    <td><input type="text" name="creation" value="{$image.creation}" 
+                        style="cursor: text" onclick="calendarShow(this);"/></td>
+                </tr>
+                <tr>
+                    <td>Accès:</td>
+                    <td><input type="radio" name="public" value="1">Public</input><br/>
+                        <input type="radio" name="public" value="0">Privé</input>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Personnes figurant sur la photo:</td>
+                    <td><textarea name="listPersonnes" rows="5" cols="100"></textarea></td>
+                </tr>
+            </table>
+            <br/><br/><center><input type="submit" value="Enregistrer les modifications"/></center>
+        </form>
+    {/if}
 {/block}

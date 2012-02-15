@@ -15,7 +15,7 @@
         <div id="global">
             <div id="header">
                 {block name=img}{/block}
-                <h1><a href="#">eBime Pictures - A new way of sharing your pics!</h1>
+                <h1>{block name=lien}{/block}</h1>
                 <div id="encartConnexion">
                     {block name=encartConnexion}{/block}
                 </div>
@@ -24,10 +24,8 @@
             <div id="barre_menu">  
                 <h2>Tri des photos</h2>
                 <ul>
-                    <li><a href="#">par lieu</li>
                     <li><a href="#">par personne</li>
                     <li><a href="#">par date</li>
-                    <li><a href="#">par date2</li>
                     <li><a href="#">par taille</li>
                 </ul>
                 {block name=menu}{/block}

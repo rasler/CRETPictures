@@ -8,6 +8,8 @@
 
 {block name=img}<img src="../images/logo_cret.png" alt="logo" title="logo" width="125px" />{/block}
 
+{block name=lien}<a href="../index.php">eBime Pictures - A new way of sharing your pics!</a>{/block}
+
 {block name=encartConnexion}
     <br/><br/>
     <table>

@@ -3,9 +3,14 @@
 {extends file="structure.tpl"}
 
 {block name=title}eBime - Accueil{/block}
+
 {block name=styles}<link rel="stylesheet" type="text/css" href="CSSFiles/structure.css"/>{/block}
 
 {block name=img}<img src="images/logo_cret.png" alt="logo" title="logo" width="125px" />{/block}
+
+{block name=lien}<a href="#">eBime Pictures - A new way of sharing your pics!</a>{/block}
+
+{* ___________________________________________ BLOCK ENCART CONNEXION ___________________________________________ *}
 
 {block name=encartConnexion}
 {assign var="connexion" value=$connexion|default:"OK"}
@@ -30,7 +35,8 @@
 </form>
 {/block}
 
+{* _________________________________________________ BLOCK BODY _________________________________________________ *}
+
 {block name=body}
-Présentation du site !!
-blablablablabla
+Bienvenu(e) sur le site eBime: Ce site permet de partager des photos!
 {/block}
