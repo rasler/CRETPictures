@@ -13,6 +13,25 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `cret_invitations`
+--
+
+CREATE TABLE IF NOT EXISTS `cret_invitations` (
+  `source` int(11) unsigned NOT NULL,
+  `destination` int(11) unsigned NOT NULL,
+  `profile` int(10) unsigned NOT NULL,
+  `state` tinyint(1) NOT NULL DEFAULT '1',
+  `date` datetime NOT NULL,
+  `message` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`source`,`destination`),
+  UNIQUE KEY `source` (`source`,`profile`),
+  KEY `profile` (`profile`),
+  KEY `destination` (`destination`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `cret_permissions`
 --
 
@@ -86,6 +105,14 @@ CREATE TABLE IF NOT EXISTS `cret_users` (
 --
 -- Contraintes pour les tables exportées
 --
+
+--
+-- Contraintes pour la table `cret_invitations`
+--
+ALTER TABLE `cret_invitations`
+  ADD CONSTRAINT `cret_invitations_ibfk_5` FOREIGN KEY (`profile`) REFERENCES `cret_profiles` (`prid`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cret_invitations_ibfk_3` FOREIGN KEY (`source`) REFERENCES `cret_users` (`uid`) ON DELETE CASCADE,
+  ADD CONSTRAINT `cret_invitations_ibfk_4` FOREIGN KEY (`destination`) REFERENCES `cret_users` (`uid`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `cret_permissions`
