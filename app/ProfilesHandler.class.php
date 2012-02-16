@@ -37,12 +37,12 @@ class ProfilesHandler
     }
     public function profiles_delete($prid)
     {
-        $rs = $this->db->prepare('DELETE FROM '.$this->prfx.'profiles WHERE prid=? AND owner=? AND owner != link');
+        $rs = $this->db->prepare('DELETE FROM '.$this->prfx.'profiles WHERE prid=? AND owner=? AND (link != owner OR link IS NULL)');
         $rs->execute(array($prid, $this->user["id"]));
     }
     public function profiles_getAll()
     {
-        $rs = $this->db->prepare('SELECT * FROM '.$this->prfx.'profiles WHERE owner=? AND owner != link');
+        $rs = $this->db->prepare('SELECT * FROM '.$this->prfx.'profiles WHERE owner=? AND (link != owner OR link IS NULL)');
         $rs->execute(array($this->user["id"]));
         return $rs->fetchAll(PDO::FETCH_NAMED);
     }
@@ -62,7 +62,7 @@ class ProfilesHandler
     }
     private function profile_clone($uid)
     {
-        $rs = $this->db->prepare('SELECT * FROM '.$this->prfx.'profiles WHERE owner=? AND owner = LINK LIMIT 1');
+        $rs = $this->db->prepare('SELECT * FROM '.$this->prfx.'profiles WHERE owner=? AND owner = link LIMIT 1');
         $rs->execute(array($uid));
         if($rs->rowCount()==0)
             throw new Exception("Profile Not Found", 404);
