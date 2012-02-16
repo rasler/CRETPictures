@@ -31,7 +31,7 @@
     $smarty->assign('perms', $perms);
 
     if(!isset($_GET['do'])){    //affichage initial de toutes les photos accessibles
-        $listPics = $search->pictures_getAll();
+        $listPics = $search->search();
         $smarty->assign('tabPics', $listPics);
     }
     else{

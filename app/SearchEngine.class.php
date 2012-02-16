@@ -17,7 +17,7 @@ class SearchEngine {
         
         $args[count($args)] = $this->user["id"];
         $args[count($args)] = $this->user["id"];
-        return "(public = 1 OR owner=? OR pid IN (SELECT s.pid FROM ".$this->prfx."shares s JOIN ".$this->prfx."profiles p USING (prid) WHERE p.link = ?))";
+        return "(public = 1 OR uid=? OR pid IN (SELECT s.pid FROM ".$this->prfx."shares s JOIN ".$this->prfx."profiles p USING (prid) WHERE p.link = ?))";
     }
     
     public function search()
