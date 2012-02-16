@@ -17,7 +17,7 @@ class ProfilesHandler
         $chmps = array('gender', 'nickName', 'firstName', 'lastName', 'birth', 'email', 'phone', 'link');
         foreach ($chmps as $c)
         {
-            if(!isset($profile[$c]))
+            if(!isset($profile[$c])||$profile[$c]=="")
                 $profile[$c] = null;
         }
     }
@@ -31,8 +31,9 @@ class ProfilesHandler
     public function profiles_update($profile)
     {
         $this->clear_entry($profile);
-        $rs = $this->db->prepare('UPDATE '.$this->prfx.'profiles SET gender=? AND nickName=? AND firstName=? AND lastName=? AND birth=? AND email=? AND phone=? WHERE prid=? AND owner=?');
-        $rs->execute(array($profile["gender"], $profile["nickName"], $profile["firstName"], $profile["lastName"], $profile["birth"], $profile["email"], $profile["phone"], $profile["prid"], $this->user["id"]));
+        $rs = $this->db->prepare('UPDATE '.$this->prfx.'profiles SET gender=? , nickName=? , firstName=? , lastName=? , birth=? , email=? , phone=? WHERE prid=? AND owner=?');
+        if(!$rs->execute(array($profile["gender"], $profile["nickName"], $profile["firstName"], $profile["lastName"], $profile["birth"], $profile["email"], $profile["phone"], $profile["prid"], $this->user["id"])))
+            throw new Exception("Erreur dans la base de données");
     }
     public function profiles_delete($prid)
     {

@@ -48,10 +48,11 @@
             if(isset($_POST['birth']))  $profile['birth'] = $_POST['birth'];
             if(isset($_POST['email']))  $profile['email'] = $_POST['email'];
             if(isset($_POST['phone']))  $profile['phone'] = $_POST['phone'];
-            
+
             $profiles->profiles_update($profile);
             
             $smarty->assign('profil', $profile);
+            $smarty->assign('profilID', $_GET['profil']);
             $smarty->display('apercuProfil.tpl');
         }
         else{
