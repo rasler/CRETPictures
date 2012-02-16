@@ -39,8 +39,8 @@
 
     <h2>Gestion de profil</h2>
     <ul>
-        <li><a href="#">Mon profil perso</a></li>
-        <li><a href="#">Profils partagés</a></li>
+        <li><a href="monProfil.php">Mon profil perso</a></li>
+        <li><a href="mesProfils.php">Profils partagés</a></li>
     </ul>
 
     {if $perms[5] == true}
@@ -323,7 +323,7 @@
             <table>
                 <tr>
                     <td>Titre photo: </td>
-                    <td><input type="text" name="title" value="{$image.title}"></input></td>
+                    <td><input type="text" name="title" value="{$image.title}"/></td>
                 </tr>
                 <tr>
                     <td>Date de création:</td>

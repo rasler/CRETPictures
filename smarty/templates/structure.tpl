@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>{block name=title}{/block}</title>
         <link rel="stylesheet" type="text/css" href="../CSSFiles/structure.css"/>
         

@@ -1,8 +1,8 @@
-{* Template pour page la lecture des users *}
+{* Template pour page de visualisation de ses profils *}
 
 {extends file="structure.tpl"}
 
-{block name=title}eBime - lecture User(s){/block}
+{block name=title}eBime - Mes Profils{/block}
 
 {block name=styles}<link rel="stylesheet" type="text/css" href="CSSFiles/structure.css"/>{/block}
 
@@ -16,7 +16,7 @@
     <br/><br/>
     <table>
         <tr>
-            Bienvenu {$name} sur votre compte!
+            Bienvenu {$name|Default:""} sur votre compte!
         </tr><br/><br/>
         <tr>
             <a href="../connexion.php?do=logout">Se déconnecter</a>
@@ -33,7 +33,7 @@
     <h2>Administration</h2>
     <ul>
         {if $perms[0] == true}<li><a href="ajoutUser.php">Ajout user(s)</a></li>{/if}
-        {if $perms[2] == true}<li><a href="UserUpdate.php">Mise à jour user(s)</a></li>{/if}
+        {if $perms[2] == true}<li><a href="updateuser.php">Mise à jour user(s)</a></li>{/if}
     </ul>
     {/if}
 
@@ -43,24 +43,45 @@
         <li><a href="mesProfils.php">Profils partagés</a></li>
     </ul>
 
-    {if $perms[5] == true}
     <h2>Gestion de photos</h2>
     <ul>
         <li><a href="mesPhotos.php?currentFolder=">Mes photos</a></li>
     </ul>
-    {/if}
 {/block}
 
 {* _________________________________________________ BLOCK BODY _________________________________________________ *}
 
 {block name=body}
+    <a href="creerProfil.php"><input type="button" value="Créer nouveau profil"/></a>
 
-<span color="#fff">Liste des utilisateurs existants : </span></br>
-
-{foreach key=K item=ind from=$users}
-    <tr>
-        <td><a href="infoUser.php?Login={$ind.login}">{$ind.login}</td></a></br>
-    </tr>
-{/foreach}
- </br>  
+    <br/><br/>
+{if $profils == NULL}
+    Aucun profil enregistré
+{else}
+    <table>
+        {section name=content loop=$profils}
+            {if $profils[content].nickName != ""}
+<tr>
+                <td>
+                    <a href="apercuProfil.php?profil={$profils[content].prid}">{$profils[content].nickName}</a>
+                </td>
+                <td><a href="mesProfils.php?suppProfil={$profils[content].prid}">
+                    <img src="../images/supp.gif" width="20px"
+                        onClick="confirm('Voulez-vous vraiment supprimer ce profil?')"/>
+                </a></td>
+</tr>
+            {elseif $profils[content].firstName != ""}
+<tr>
+                <td>
+                    <a href="apercuProfil.php?profil={$profils[content].prid}">{$profils[content].firstName}</a>
+                </td>
+                <td><a href="mesProfils.php?suppProfil={$profils[content].prid}">
+                    <img src="../images/supp.gif" width="20px"
+                        onClick="confirm('Voulez-vous vraiment supprimer ce profil?')"/>
+                </a></td>
+</tr>
+            {/if}
+        {/section}
+    </table>
+{/if}
 {/block}

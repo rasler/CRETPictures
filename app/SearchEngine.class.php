@@ -35,6 +35,12 @@ class SearchEngine {
         return $rs->fetch(PDO::FETCH_NAMED);
     }
     
+    public function pictures_getAll(){
+        $rs = $this->db->prepare("SELECT * FROM ".$this->prfx."pictures WHERE public = 1");
+        $rs->execute();
+        return $rs->fetchAll(PDO::FETCH_OBJ);
+    }
+    
     public function __construct($system)
     {
         global $pi_db_prefix;

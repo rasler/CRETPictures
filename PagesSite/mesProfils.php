@@ -1,14 +1,16 @@
 <?php
 /**
- * Page d'ajout d'un user
+ * Description of monProfil:
+ * Page de visualisation d'un profil
  *
- * @author Estelle
+ * @author Madeleine
  */
     require('../smarty/setup.php');
     $smarty = new Smarty_CRETPictures();
-    
     require_once('../app/system.class.php');
     $sys = new System();
+    require_once('../app/ProfilesHandler.class.php');
+    $profiles = new ProfilesHandler($sys);
     
     $perms; //tableau qui stockera si l'utilisateur a certaines permissions
     $perms[0] = $sys->permissions_test('admin.user.create');
@@ -26,9 +28,10 @@
     }
     else    $smarty->assign('name', "");
     
-    $users = $sys->user_getAll();
+    if(isset($_GET['suppProfil'])) $profiles->profiles_delete ($_GET['suppProfil']);        
     
-    $smarty->assign('users', $users);
+    $listprofils = $profiles->profiles_getAll();
+    $smarty->assign('profils', $listprofils);
     
-    $smarty->display('UserUpdate.tpl');
+    $smarty->display('mesProfils.tpl');
 ?>

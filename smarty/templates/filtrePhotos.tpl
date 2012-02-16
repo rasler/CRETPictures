@@ -58,8 +58,8 @@
 
     <h2>Gestion de profil</h2>
     <ul>
-        <li><a href="#">Mon profil perso</a></li>
-        <li><a href="#">Profils partagés</a></li>
+        <li><a href="monProfil.php">Mon profil perso</a></li>
+        <li><a href="mesProfils.php">Profils partagés</a></li>
     </ul>
 
     {if $perms[5] == true}
@@ -74,7 +74,70 @@
 
 {block name=body}
     {if $perms[4] == true}
+
+{* ############################################  FORMULAIRE FILTRES  ############################################ *}
+
+    <form method="POST" action="filtrePhotos.php?do=filter">
+        <tr>
+            <td>Size : </td>
+            <td><SELECT name="paramSize">
+                <OPTION value="">--</OPTION>
+                <OPTION value=">">More than</OPTION>
+                <OPTION value="<">Less Than</OPTION>
+                <OPTION value="=">Equals To</OPTION>
+            </SELECT></td>
+            <td><input type="text" name="size"/> octets</td>
+        </tr><br/>
+        <tr>
+            <td>Personnes figurant sur la photo: </td><br/>
+            <td><textarea name="listPersonnes" rows="5" cols="50"></textarea></td>
+        </tr><br/>
+        <tr>
+            <td>Date de prise: </td>
+            <td>
+                <SELECT name="mois">
+                    <OPTION value=""></OPTION>
+                    <OPTION value="01">Janvier</OPTION>
+                    <OPTION value="02">Février</OPTION>
+                    <OPTION value="03">Mars</OPTION>
+                    <OPTION value="04">Avril</OPTION>
+                    <OPTION value="05">Mai</OPTION>
+                    <OPTION value="06">Juin</OPTION>
+                    <OPTION value="07">Juillet</OPTION>
+                    <OPTION value="08">Aout</OPTION>
+                    <OPTION value="09">Septembre</OPTION>
+                    <OPTION value="10">Octobre</OPTION>
+                    <OPTION value="11">Novembre</OPTION>
+                    <OPTION value="12">Décembre</OPTION>
+                </SELECT>
+            </td>
+            <td><input type="text" name="annee"/></td>
+        </tr>
+        <br/><br/>
+        <tr><input type="submit" value="Filtrer"/></tr>
+    </form>
+
+{* #############################################  AFFICHAGE PHOTOS  ############################################# *}
+
+    <br/><br/>
     <table>
+        {foreach from=$tabPics item=photo}
+            <td>
+                <a href="apercuPhoto.php?img={$photo->pid}">
+                    <img src="../app/picture/{$photo->pid}/thumb/255x255"/>
+                </a><br/>
+                <center>
+                {$photo->title}
+                <a href="apercuPhoto.php?img={$photo->pid}&do=modify">
+                    <img src="../images/modif.gif" width="20px"/>
+                </a>
+                <a href="../index.php?suppPic={$photo->pid}">
+                    <img src="../images/supp.gif" width="20px" 
+                        onClick="confirm('Voulez-vous vraiment supprimer cette photo?')"/>
+                </a>
+                </center>
+            </td>
+        {/foreach}
     </table>
     {/if}
 {/block}

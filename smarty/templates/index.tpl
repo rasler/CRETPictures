@@ -15,7 +15,7 @@
 {block name=encartConnexion}
 {assign var="connexion" value=$connexion|default:"OK"}
 {if $connexion eq "failed"}
-    <div id="erreur">Erreur connexion !!</div>
+    <div id="erreur"><br/>Erreur connexion !!</div>
 {/if}
 <form method="POST" action="connexion.php?do=login">
     <table>

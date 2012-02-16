@@ -42,12 +42,12 @@
                 $length = strlen($image['file'])-strlen($image['title']);
                 
                 //vérification de l'extension
-                $extension = strrchr($_POST['title'], '.');
+                $extension = strrchr($_POST['title'], ".");
+                $extension = substr($extension, 1);
                 
                 if($extension == FALSE || 
                         ($extension != 'jpg' && $extension != 'png' && $extension != 'gif' && $extension != 'bmp')){
-                    $extensionInit = strrchr($image['title'], '.');
-                    echo $_POST['title'].$extensionInit;
+                    $extensionInit = strrchr($image['title'], ".");
                     $image['title'] = $_POST['title'].$extensionInit;
                 }
                 else    $image['title'] = $_POST['title'];
@@ -57,7 +57,10 @@
                 $image['file'] = $path.$image['title'];
             }
             if(isset($_POST['public']))     $image['public'] = $_POST['public'];
-            if(isset($_POST['creation']))   $image['creation'] = $_POST['creation'];
+            if(isset($_POST['creation'])){
+                $creation = $_POST['creation']." 00:00:00";
+                $image['creation'] = $creation;
+            }
             
             $phandler->pictures_update($image);
             $smarty->assign('image', $image);

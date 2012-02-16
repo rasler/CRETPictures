@@ -1,8 +1,8 @@
-{* Template pour page la lecture des users *}
+{* Template pour page d'aperçu de photo *}
 
 {extends file="structure.tpl"}
 
-{block name=title}eBime - lecture User(s){/block}
+{block name=title}eBime - Visualisation Profil{/block}
 
 {block name=styles}<link rel="stylesheet" type="text/css" href="CSSFiles/structure.css"/>{/block}
 
@@ -16,10 +16,10 @@
     <br/><br/>
     <table>
         <tr>
-            Bienvenu {$name} sur votre compte!
+            Bienvenu {$name|Default:""} sur votre compte!
         </tr><br/><br/>
         <tr>
-            <a href="../connexion.php?do=logout">Se déconnecter</a>
+            <a href="connexion.php?do=logout">Se déconnecter</a>
         <tr/>
     </table>
 {/block}
@@ -33,7 +33,7 @@
     <h2>Administration</h2>
     <ul>
         {if $perms[0] == true}<li><a href="ajoutUser.php">Ajout user(s)</a></li>{/if}
-        {if $perms[2] == true}<li><a href="UserUpdate.php">Mise à jour user(s)</a></li>{/if}
+        {if $perms[2] == true}<li><a href="updateuser.php">Mise à jour user(s)</a></li>{/if}
     </ul>
     {/if}
 
@@ -54,13 +54,41 @@
 {* _________________________________________________ BLOCK BODY _________________________________________________ *}
 
 {block name=body}
+    <br/><br/>
+    <table>
+        <tr>
+            <td>Nom : </td><td>{$profil['lastName']}</td>
+        </tr>
+        <tr>
+            <td>Prenom : </td><td>{$profil.firstName}</td>
+        </tr>
+        <tr>
+            <td>Date de naissance : </td><td>{$profil.birth}</td>
+        </tr>
+        <tr>
+            <td>Sexe : </td><td>{$profil.gender}</td>
+        </tr>
+        <tr>
+            <td>Surnom : </td><td>{$profil.nickName}</td>
+        </tr>
+        <tr>
+            <td>Email : </td><td>{$profil.email}</td>
+        </tr>
+        <tr>
+            <td>Num téléphone : </td><td>{$profil.phone}</td>
+        </tr>
+    </table>
 
-<span color="#fff">Liste des utilisateurs existants : </span></br>
-
-{foreach key=K item=ind from=$users}
-    <tr>
-        <td><a href="infoUser.php?Login={$ind.login}">{$ind.login}</td></a></br>
-    </tr>
-{/foreach}
- </br>  
+    <br/><br/>
+    <table>
+        <tr>
+            <td><a href="apercuProfil.php?profil={$profilID}&do=modify">
+                <input type="button" value="Modifier le profil"/>
+            </a></td>
+            <td><a href="../index.php?suppProfil={$profilID}">
+                <input type="button" value="Supprimer le profil"
+                    onClick="confirm('Voulez-vous vraiment supprimer ce profil?');"/>
+            </a></td>
+        </tr>
+    </table>
 {/block}

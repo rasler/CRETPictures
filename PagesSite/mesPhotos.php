@@ -57,7 +57,6 @@
     //exploration d'un dossier
     if(isset($_GET['currentFolder'])){
         if($_GET['currentFolder'] == ""){   //on est à la racine
-            echo "on est à la racine";
             //tableau qui stockera le pid des photos qu'il faudra afficher
             $pics = array();
             for($i = 0; $i < count($photos); $i++){

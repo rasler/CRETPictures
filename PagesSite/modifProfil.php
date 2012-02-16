@@ -1,14 +1,16 @@
 <?php
 /**
- * Page d'ajout d'un user
+ * Description of modifProfil:
+ * Page de modification d'un profil
  *
- * @author Estelle
+ * @author Madeleine
  */
     require('../smarty/setup.php');
     $smarty = new Smarty_CRETPictures();
-    
     require_once('../app/system.class.php');
     $sys = new System();
+    require_once('../app/ProfilesHandler.class.php');
+    $profiles = new ProfilesHandler($sys);
     
     $perms; //tableau qui stockera si l'utilisateur a certaines permissions
     $perms[0] = $sys->permissions_test('admin.user.create');
@@ -18,17 +20,24 @@
     $perms[4] = $sys->permissions_test('admin.picture.read');
     $perms[5] = $sys->permissions_test('application.picture.upload');
     
-    $smarty->assign('perms', $perms);
-    
     if($sys->current_user() != null){
         $usr = $sys->current_user();
         $smarty->assign('name', $usr['login']);
     }
-    else    $smarty->assign('name', "");
+    else{
+        $smarty->assign('name', "");
+    }
     
-    $users = $sys->user_getAll();
+    if(isset($_GET['profil'])){
+        $profile = $profiles->profiles_getByID($_GET['profil']);
+        $smarty->assign('profil', $profile);
+        $smarty->assign('profilID', $_GET['profil']);
+    }
     
-    $smarty->assign('users', $users);
+    if(isset($_GET['do']) && $_GET['do'] == "update"){
+        echo "modification en cours";
+    }
     
-    $smarty->display('UserUpdate.tpl');
+    $smarty->assign('perms', $perms);
+    $smarty->display('modifProfil.tpl');
 ?>

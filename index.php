@@ -10,6 +10,10 @@
     $smarty = new Smarty_CRETPictures();
     require_once 'app/System.class.php';
     $sys = new System(); 
+    require_once 'app/ProfilesHandler.class.php';
+    $profiles = new ProfilesHandler($sys);
+    require_once 'app/SearchEngine.class.php';
+    $search = new SearchEngine($sys);
     
     //si l'utilisateur n'est pas connecté
     if($sys->current_user() == null)    $smarty->display('index.tpl');
@@ -21,7 +25,6 @@
 
         //aller chercher les photos de l'utilisateur connecté
         $usr = $sys->current_user();
-        $photos = $phandler->pictures_getFolderByUserID($usr['id']);
         
         $perms; //tableau qui stockera si l'utilisateur a certaines permissions
         $perms[0] = $sys->permissions_test('admin.user.create');
@@ -32,18 +35,16 @@
         $perms[5] = $sys->permissions_test('application.picture.upload');
 
         $smarty->assign('perms', $perms);
-        $smarty->assign('tabPhotos', $photos);
-    
-        $pics = array();
-        for($i = 0; $i < count($photos); $i++){
-            if($photos[$i]['type'] == 'picture'){
-                $pics[$i]['id'] = $photos[$i]['pid'];
-                $pics[$i]['title'] = $photos[$i]['title'];
-            }
-        }
         
+        if(isset($_GET['suppProfil']))  $profiles->profiles_delete($_GET['suppProfil']);
+        if(isset($_GET['suppPic'])) $phandler->pictures_remove($_GET['suppPic']);
+        $photos = $phandler->pictures_getFolderByUserID($usr['id']);
+        
+        $listPics = $search->pictures_getAll();
+        $smarty->assign('tabPics', $listPics);
+                
+        $smarty->assign('tabPhotos', $photos);
         $smarty->assign('name', $usr['login']);
-        $smarty->assign('tabPics',$pics);
         $smarty->display('indexConnecte.tpl');
     }
 ?>
